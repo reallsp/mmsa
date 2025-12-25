@@ -25,8 +25,8 @@ class ATIO():
             'mmim': MMIM,
             'cenet':CENET,
             'almt': ALMT,
-            'almt_mil': ALMT_MIL,
-            'almt_r1': ALMT_R1,
+            # 'almt_mil': ALMT_MIL,  # 模块不存在，暂时注释
+            # 'almt_r1': ALMT_R1,  # 模块不存在，暂时注释
             'almt_cider': ALMT_CIDer,
             # multi-task
             'mtfn': MTFN,

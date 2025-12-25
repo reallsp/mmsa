@@ -143,7 +143,8 @@ def MMSA_run(
         # torch.cuda.set_device() encouraged by pytorch developer, although dicouraged in the doc.
         # https://github.com/pytorch/pytorch/issues/70404#issuecomment-1001113109
         # It solves the bug of RNN always running on gpu 0.
-        torch.cuda.set_device(initial_args['device'])
+        if initial_args['device'].type == 'cuda':
+            torch.cuda.set_device(initial_args['device'])
 
         res_save_dir = Path(res_save_dir) / "tune"
         res_save_dir.mkdir(parents=True, exist_ok=True)
@@ -205,7 +206,8 @@ def MMSA_run(
         # torch.cuda.set_device() encouraged by pytorch developer, although dicouraged in the doc.
         # https://github.com/pytorch/pytorch/issues/70404#issuecomment-1001113109
         # It solves the bug of RNN always running on gpu 0.
-        torch.cuda.set_device(args['device'])
+        if args['device'].type == 'cuda':
+            torch.cuda.set_device(args['device'])
 
         logger.info("Running with args:")
         logger.info(args)
@@ -474,7 +476,8 @@ if SENA_ENABLED:
             )
             # start training
             try:
-                torch.cuda.set_device(args['device'])
+                if args['device'].type == 'cuda':
+                    torch.cuda.set_device(args['device'])
                 logger.info(f"Running with seed {seed}:")
                 logger.info(f"Args:\n{args}")
                 setup_seed(seed)

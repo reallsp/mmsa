@@ -1,0 +1,32 @@
+MMSA - ======================================== Program Start ========================================
+MMSA - Running with args:
+MMSA - {'model_name': 'tfn', 'dataset_name': 'custom', 'featurePath': 'train_12.16_1_converted.pkl', 'seq_lens': [50, 512, 197], 'feature_dims': [768, 13, 768], 'train_samples': 256, 'num_classes': 2, 'language': 'en', 'KeyEval': 'Loss', 'missing_rate': [0.2, 0.2, 0.2], 'missing_seed': [1111, 1111, 1111], 'need_data_aligned': False, 'need_model_aligned': False, 'need_normalized': True, 'early_stop': 8, 'hidden_dims': [128, 32, 128], 'text_out': 32, 'post_fusion_dim': 64, 'dropouts': [0.3, 0.3, 0.3, 0.5], 'batch_size': 16, 'learning_rate': 0.001, 'model_save_path': PosixPath('/root/MMSA/saved_models/tfn-custom.pth'), 'device': device(type='cpu'), 'train_mode': 'regression', 'custom_feature': None, 'feature_T': None, 'feature_A': None, 'feature_V': None}
+MMSA - Seeds: [1111]
+MMSA - ------------------------------ Running with seed 1111 [1/1] ------------------------------
+MMSA - train samples: (256,)
+MMSA - valid samples: (55,)
+MMSA - test samples: (55,)
+MMSA - The model has 9594555 trainable parameters
+Traceback (most recent call last):
+  File "/root/mmsa-main/train_custom.py", line 22, in <module>
+    results = MMSA_run(
+  File "/root/mmsa-main/src/MMSA/run.py", line 223, in MMSA_run
+    result = _run(args, num_workers, is_tune)
+  File "/root/mmsa-main/src/MMSA/run.py", line 256, in _run
+    trainer = ATIO().getTrain(args)
+  File "/root/mmsa-main/src/MMSA/trains/ATIO.py", line 42, in getTrain
+    return self.TRAIN_MAP[args['model_name']](args)
+  File "/root/mmsa-main/src/MMSA/trains/singleTask/TFN.py", line 17, in __init__
+    self.metrics = MetricsTop(args.train_mode).getMetics(args.dataset_name)
+  File "/root/mmsa-main/src/MMSA/utils/metricsTop.py", line 178, in getMetics
+    return self.metrics_dict[datasetName.upper()]
+KeyError: 'CUSTOM'
+======================================================================
+开始训练模型（CPU模式）
+======================================================================
+模型: TFN
+数据集: custom
+随机种子: 1111
+======================================================================
+
+训练出错: 'CUSTOM'
