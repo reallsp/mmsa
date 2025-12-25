@@ -1,0 +1,44 @@
+MMSA - ======================================== Program Start ========================================
+/root/miniconda3/lib/python3.10/site-packages/torch/cuda/__init__.py:215: UserWarning: 
+NVIDIA GeForce RTX 5090 with CUDA capability sm_120 is not compatible with the current PyTorch installation.
+The current PyTorch install supports CUDA capabilities sm_50 sm_60 sm_70 sm_75 sm_80 sm_86 sm_90.
+If you want to use the NVIDIA GeForce RTX 5090 GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+
+  warnings.warn(
+MMSA - Running with args:
+MMSA - {'model_name': 'tfn', 'dataset_name': 'custom', 'featurePath': 'train_12.16_1_converted.pkl', 'seq_lens': [50, 512, 197], 'feature_dims': [768, 13, 768], 'train_samples': 256, 'num_classes': 2, 'language': 'en', 'KeyEval': 'Loss', 'missing_rate': [0.2, 0.2, 0.2], 'missing_seed': [1111, 1111, 1111], 'need_data_aligned': False, 'need_model_aligned': False, 'need_normalized': True, 'early_stop': 8, 'hidden_dims': [128, 32, 128], 'text_out': 32, 'post_fusion_dim': 64, 'dropouts': [0.3, 0.3, 0.3, 0.5], 'batch_size': 16, 'learning_rate': 0.001, 'model_save_path': PosixPath('tfn-custom.pth'), 'device': device(type='cuda', index=0), 'train_mode': 'regression', 'custom_feature': None, 'feature_T': '', 'feature_A': '', 'feature_V': ''}
+MMSA - Seeds: [1111]
+MMSA - ------------------------------ Running with seed 1111 [1/1] ------------------------------
+MMSA - train samples: (256,)
+MMSA - valid samples: (55,)
+MMSA - test samples: (55,)
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/root/miniconda3/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/root/mmsa-main/src/MMSA/__main__.py", line 46, in <module>
+    MMSA_run(
+  File "/root/mmsa-main/src/MMSA/run.py", line 221, in MMSA_run
+    result = _run(args, num_workers, is_tune)
+  File "/root/mmsa-main/src/MMSA/run.py", line 246, in _run
+    model = AMIO(args).to(args['device'])
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1160, in to
+    return self._apply(convert)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 810, in _apply
+    module._apply(fn)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 810, in _apply
+    module._apply(fn)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 810, in _apply
+    module._apply(fn)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/rnn.py", line 218, in _apply
+    self._init_flat_weights()
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/rnn.py", line 155, in _init_flat_weights
+    self.flatten_parameters()
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/rnn.py", line 206, in flatten_parameters
+    torch._cudnn_rnn_flatten_weight(
+RuntimeError: CUDA error: no kernel image is available for execution on the device
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

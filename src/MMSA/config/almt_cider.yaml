@@ -1,0 +1,107 @@
+model_name: "ALMT_CIDer"
+dataset_name: "MOSI"
+
+# ===== ALMT基础配置 =====
+almt_config:
+  use_bert: true
+  use_finetune: true
+  transformers: "bert"
+  pretrained: "bert-base-uncased"
+  
+  feature_dims: [768, 5, 20]  # [text, audio, video]
+  feature_length: [50, 50, 50]
+  dst_feature_dims: 128
+  dst_feature_hidden_dims: 256
+  dst_embedding_length: 8
+  
+  embedding_depth: [2, 2, 2]
+  embedding_heads: [8, 8, 8]
+  
+  AHL_depth: 3
+  h_hyper_layer_heads: 8
+  l_encoder_heads: 8
+  
+  fusion_hidden_d: 256
+  fusion_heads: 8
+  fusion_layer_depth: 2
+
+# =====消融研究模块开关 =====
+# 消融实验配置示例：
+# 1. 基础ALMT: 全部设为false
+# 2. +自蒸馏: 只enable_cider_distillation=true
+# 3. +对齐: enable_cider_distillation=true, enable_intelligent_alignment=true
+# 4. +双向注意力: 前面基础上加enable_bidirectional_attention=true
+# 5. 全部: 全部设为true
+enable_cider_distillation: false       
+enable_intelligent_alignment: false    
+enable_modality_balance: true         
+enable_bidirectional_attention: true  
+
+# ===== 模块参数 =====
+cider_self_distillation:
+  conservative_init_scale: 0.2
+  adaptive_init_scale: 0.1
+  distillation_weights:
+    hyper_distill: 0.6
+    feature_distill: 0.3
+    prediction_distill: 0.1
+
+intelligent_alignment:
+  alignment_method: "importance_based"
+  alignment_heads: 16
+  alignment_dropout: 0.1
+  importance_temperature: 1.0
+
+modality_contribution_balance:
+  expert_dropout: 0.1
+  contribution_temperature: 1.0
+  intensity_levels: 8
+
+# 双向交叉注意力配置
+bidirectional_cross_attention:
+  attention_heads: 8
+  attention_dropout: 0.1
+  fusion_dropout: 0.1
+  temperature: 1.2
+  complementary_alpha: 0.6  # 相似性vs互补性平衡
+  use_complementary: true
+  residual_weight: 0.2
+
+# ===== 训练配置 =====
+training_config:
+  max_epochs: 200
+  batch_size: 64
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  early_stop: 32
+  max_grad_norm: 2.0
+  
+  # 损失权重
+  loss_weights:
+    task_loss: 1.0
+    distillation_loss: 0.6
+    alignment_loss: 0.0
+    contribution_loss: 0.6
+    cross_attention_loss: 0.0
+
+# ===== 评估配置 =====
+evaluation_config:
+  metrics: ["MAE", "Corr", "Acc-2", "Acc-7", "F1"]
+  early_stopping:
+    patience: 15
+    monitor: "Acc-2"
+    mode: "max"
+
+# ===== 实验控制 =====
+experiment_config:
+  experiment_name: "ALMT_CIDer_Full_Pipeline" 
+  
+  # 保存设置
+  save_model: true
+  save_results: true
+  
+  # 日志设置
+  log_interval: 10
+  
+  # 随机种子
+  seed: 5

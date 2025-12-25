@@ -1,0 +1,16 @@
+.vscode
+__pycache__
+results/*
+results_old
+!results/result-stat.md
+dist
+logs
+*.egg-info
+test*
+experiment.py
+benchmark
+result
+results
+datasets/
+train_12.16_1_converted.pkl
+train_12.16_1.pkl

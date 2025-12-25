@@ -1,0 +1,15 @@
+MMSA - ======================================== Program Start ========================================
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/root/miniconda3/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/root/mmsa-main/src/MMSA/__main__.py", line 46, in <module>
+    MMSA_run(
+  File "/root/mmsa-main/src/MMSA/run.py", line 208, in MMSA_run
+    torch.cuda.set_device(args['device'])
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/cuda/__init__.py", line 402, in set_device
+    device = _get_device_index(device)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/cuda/_utils.py", line 35, in _get_device_index
+    raise ValueError(f"Expected a cuda device, but got: {device}")
+ValueError: Expected a cuda device, but got: cpu

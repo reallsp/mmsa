@@ -1,0 +1,17 @@
+2025-12-25 12:29:13,353 - MMSA [INFO] - ======================================== Program Start ========================================
+2025-12-25 12:29:13,476 - MMSA [INFO] - Running with args:
+2025-12-25 12:29:13,477 - MMSA [INFO] - {'model_name': 'tfn', 'dataset_name': 'custom', 'featurePath': 'train_12.16_1_converted.pkl', 'seq_lens': [50, 512, 197], 'feature_dims': [768, 13, 768], 'train_samples': 256, 'num_classes': 2, 'language': 'en', 'KeyEval': 'Loss', 'missing_rate': [0.2, 0.2, 0.2], 'missing_seed': [1111, 1111, 1111], 'need_data_aligned': False, 'need_model_aligned': False, 'need_normalized': True, 'early_stop': 8, 'hidden_dims': [128, 32, 128], 'text_out': 32, 'post_fusion_dim': 64, 'dropouts': [0.3, 0.3, 0.3, 0.5], 'batch_size': 16, 'learning_rate': 0.001, 'model_save_path': PosixPath('tfn-custom.pth'), 'device': device(type='cuda', index=0), 'train_mode': 'regression', 'custom_feature': None, 'feature_T': '', 'feature_A': '', 'feature_V': ''}
+2025-12-25 12:29:13,477 - MMSA [INFO] - Seeds: [1111]
+2025-12-25 12:29:13,477 - MMSA [INFO] - ------------------------------ Running with seed 1111 [1/1] ------------------------------
+2025-12-25 12:29:13,826 - MMSA [INFO] - train samples: (256,)
+2025-12-25 12:29:14,169 - MMSA [INFO] - valid samples: (55,)
+2025-12-25 12:29:14,472 - MMSA [INFO] - test samples: (55,)
+2025-12-25 12:29:47,469 - MMSA [INFO] - ======================================== Program Start ========================================
+2025-12-25 12:29:47,594 - MMSA [INFO] - Running with args:
+2025-12-25 12:29:47,595 - MMSA [INFO] - {'model_name': 'tfn', 'dataset_name': 'custom', 'featurePath': 'train_12.16_1_converted.pkl', 'seq_lens': [50, 512, 197], 'feature_dims': [768, 13, 768], 'train_samples': 256, 'num_classes': 2, 'language': 'en', 'KeyEval': 'Loss', 'missing_rate': [0.2, 0.2, 0.2], 'missing_seed': [1111, 1111, 1111], 'need_data_aligned': False, 'need_model_aligned': False, 'need_normalized': True, 'early_stop': 8, 'hidden_dims': [128, 32, 128], 'text_out': 32, 'post_fusion_dim': 64, 'dropouts': [0.3, 0.3, 0.3, 0.5], 'batch_size': 16, 'learning_rate': 0.001, 'model_save_path': PosixPath('tfn-custom.pth'), 'device': device(type='cuda', index=0), 'train_mode': 'regression', 'custom_feature': None, 'feature_T': '', 'feature_A': '', 'feature_V': ''}
+2025-12-25 12:29:47,596 - MMSA [INFO] - Seeds: [1111]
+2025-12-25 12:29:47,597 - MMSA [INFO] - ------------------------------ Running with seed 1111 [1/1] ------------------------------
+2025-12-25 12:29:47,927 - MMSA [INFO] - train samples: (256,)
+2025-12-25 12:29:48,236 - MMSA [INFO] - valid samples: (55,)
+2025-12-25 12:29:48,506 - MMSA [INFO] - test samples: (55,)
+2025-12-25 12:30:23,908 - MMSA [INFO] - ======================================== Program Start ========================================
