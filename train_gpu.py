@@ -1,33 +1,34 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""使用新数据集训练模型（GPU模式）"""
+"""使用GPU训练模型"""
 import sys
 import os
 sys.path.insert(0, 'src')
 
 import torch
-
 from MMSA.run import MMSA_run
 
 print('=' * 70)
-print('开始训练模型（GPU模式）')
+print('GPU训练模式')
 print('=' * 70)
 
 # 检查GPU可用性
 if torch.cuda.is_available():
     gpu_count = torch.cuda.device_count()
-    print(f'检测到 {gpu_count} 个GPU:')
+    print(f'✓ 检测到 {gpu_count} 个GPU:')
     for i in range(gpu_count):
         print(f'  GPU {i}: {torch.cuda.get_device_name(i)}')
     gpu_ids = [0]  # 使用第一个GPU
-    print(f'使用GPU: {gpu_ids}')
+    print(f'\n使用GPU: {gpu_ids[0]}')
+    device_type = 'GPU'
 else:
-    print('未检测到GPU，将使用CPU')
+    print('✗ 未检测到GPU，将使用CPU')
     gpu_ids = []  # 空列表使用CPU
+    device_type = 'CPU'
 
-print('模型: TFN')
-print('数据集: custom')
-print('随机种子: 1111')
+print(f'\n模型: TFN')
+print(f'数据集: custom')
+print(f'随机种子: 1111')
 print('=' * 70)
 
 try:
@@ -40,14 +41,23 @@ try:
         verbose_level=1
     )
     print('\n' + '=' * 70)
-    print('训练完成！')
+    print(f'训练完成！({device_type}模式)')
     print('=' * 70)
-    print('结果:', results)
+    if results:
+        print('结果:', results)
+except RuntimeError as e:
+    error_msg = str(e)
+    if 'CUDA' in error_msg or 'kernel' in error_msg.lower():
+        print('\n⚠ CUDA错误:', error_msg)
+        print('\n这可能是因为GPU兼容性问题。')
+        print('RTX 5090需要PyTorch 2.5+才能支持。')
+        print('建议:')
+        print('1. 升级PyTorch到支持sm_120的版本')
+        print('2. 或使用CPU模式 (gpu_ids=[])')
+    else:
+        raise
 except Exception as e:
     print(f'\n训练出错: {e}')
-    if 'CUDA' in str(e) or 'kernel' in str(e).lower():
-        print('\n检测到CUDA错误，可能是GPU兼容性问题。')
-        print('可以尝试使用CPU模式：gpu_ids=[]')
     import traceback
     traceback.print_exc()
 

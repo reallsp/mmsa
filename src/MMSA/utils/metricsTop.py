@@ -10,14 +10,18 @@ class MetricsTop():
                 'MOSI': self.__eval_mosi_regression,
                 'MOSEI': self.__eval_mosei_regression,
                 'SIMS': self.__eval_sims_regression,
-                'SIMSV2': self.__eval_sims_regression
+                'SIMSV2': self.__eval_sims_regression,
+                'CUSTOM': self.__eval_mosi_regression,  # 使用MOSI的回归指标
+                'TRAIN_12_16': self.__eval_mosi_regression  # 使用MOSI的回归指标
             }
         else:
             self.metrics_dict = {
                 'MOSI': self.__eval_mosi_classification,
                 'MOSEI': self.__eval_mosei_classification,
                 'SIMS': self.__eval_sims_classification,
-                'SIMSV2': self.__eval_sims_classification
+                'SIMSV2': self.__eval_sims_classification,
+                'CUSTOM': self.__eval_mosi_classification,  # 使用MOSI的分类指标
+                'TRAIN_12_16': self.__eval_mosi_classification  # 使用MOSI的分类指标
             }
 
     def __eval_mosi_classification(self, y_pred, y_true):
