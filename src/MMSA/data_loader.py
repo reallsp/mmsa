@@ -129,16 +129,22 @@ class MMDataset(Dataset):
             with open(self.args['featurePath'], 'rb') as f:
                 data = pickle.load(f)
         
-        # 加载文本特征 (text_bert格式: [N, 3, seq_len])
-        if 'text_bert' in data[self.mode]:
+        # 加载文本特征
+        # 优先使用text字段（序列格式 [N, seq_len, dim]），如果不支持BERT的模型使用
+        # 如果use_bert为True，则使用text_bert字段（[N, 3, seq_len]）
+        if self.args.get('use_bert', None) and 'text_bert' in data[self.mode]:
             self.text = data[self.mode]['text_bert'].astype(np.float32)
-            # text_bert格式是[N, 3, seq_len]，需要转换为[N, seq_len, 3]用于某些模型
-            # 但MMSA框架期望使用use_bert时，text应该是[N, 3, seq_len]格式
+            # text_bert格式是[N, 3, seq_len]
             # 特征维度设置为768（BERT维度）
             self.args['feature_dims'][0] = 768
         elif 'text' in data[self.mode]:
             self.text = data[self.mode]['text'].astype(np.float32)
+            # text格式是[N, seq_len, dim]
             self.args['feature_dims'][0] = self.text.shape[2] if len(self.text.shape) > 2 else self.text.shape[1]
+        elif 'text_bert' in data[self.mode]:
+            # 如果没有text字段但有text_bert，作为fallback使用text_bert
+            self.text = data[self.mode]['text_bert'].astype(np.float32)
+            self.args['feature_dims'][0] = 768
         else:
             raise ValueError(f"No text feature found in {self.mode} data")
         

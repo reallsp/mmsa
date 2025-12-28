@@ -6,7 +6,11 @@ import os
 sys.path.insert(0, 'src')
 
 import torch
+from pathlib import Path
 from MMSA.run import MMSA_run
+
+# 获取当前项目目录
+project_dir = Path(__file__).parent.absolute()
 
 print('=' * 70)
 print('GPU训练模式')
@@ -38,7 +42,10 @@ try:
         seeds=[1111],
         gpu_ids=gpu_ids,  # 使用GPU
         num_workers=4 if gpu_ids else 2,  # GPU模式可以使用更多workers
-        verbose_level=1
+        verbose_level=1,
+        model_save_dir=str(project_dir / "saved_models"),  # 保存到项目目录
+        res_save_dir=str(project_dir / "results"),  # 保存到项目目录
+        log_dir=str(project_dir / "logs")  # 保存到项目目录
     )
     print('\n' + '=' * 70)
     print(f'训练完成！({device_type}模式)')

@@ -93,6 +93,7 @@ class TFN():
         model.eval()
         y_pred, y_true = [], []
         eval_loss = 0.0
+        sample_indices = []  # 收集样本索引用于COPA评估
         if return_sample_results:
             ids, sample_results = [], []
             all_labels = []
@@ -115,6 +116,16 @@ class TFN():
                         labels = labels.view(-1, 1)
                     outputs = model(text, audio, vision)
 
+                    # 收集样本索引（用于COPA评估）
+                    if 'index' in batch_data:
+                        batch_indices = batch_data['index'].cpu().numpy()
+                        sample_indices.extend(batch_indices)
+                    else:
+                        # 如果没有索引，使用当前累积的索引
+                        current_start = len(sample_indices)
+                        batch_size = labels.shape[0]
+                        sample_indices.extend(range(current_start, current_start + batch_size))
+
                     if return_sample_results:
                         ids.extend(batch_data['id'])
                         for item in features.keys():
@@ -132,6 +143,23 @@ class TFN():
         pred, true = torch.cat(y_pred), torch.cat(y_true)
         eval_results = self.metrics(pred, true)
         eval_results["Loss"] = round(eval_loss, 4)
+        
+        # 如果是custom数据集，添加COPA评估
+        if self.args.dataset_name.lower() in ['custom', 'train_12_16']:
+            try:
+                copa_metrics = MetricsTop(self.args.train_mode)
+                # 获取群体类型（从args中获取，默认为i1）
+                group_type = getattr(self.args, 'copa_group_type', 'i1')
+                copa_results = copa_metrics.eval_copa_paradigm_accuracy(
+                    pred, true, 
+                    sample_indices=np.array(sample_indices) if sample_indices else None,
+                    group_type=group_type
+                )
+                # 合并COPA结果到评估结果中
+                eval_results.update(copa_results)
+            except Exception as e:
+                logger.warning(f"COPA评估失败: {e}")
+        
         logger.info(f"{mode}-({self.args.model_name}) >> {dict_to_str(eval_results)}")
 
         if return_sample_results:

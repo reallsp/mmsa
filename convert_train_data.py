@@ -38,6 +38,30 @@ def extract_audio_features(audio_waveform, sr=16000, n_mfcc=13, hop_length=512):
         # 如果失败，返回零特征
         return np.zeros((100, n_mfcc), dtype=np.float32)
 
+def convert_text_to_sequence_format(text_feature, max_seq_len=50, feature_dim=768):
+    """
+    将768维BERT特征向量转换为序列格式 [seq_len, dim]
+    Args:
+        text_feature: (768,) BERT特征向量
+        max_seq_len: 目标序列长度
+        feature_dim: 目标特征维度 (应为768)
+    Returns:
+        text_sequence: [max_seq_len, feature_dim] - 序列格式
+    """
+    # 简单地将768维向量重复或截断为max_seq_len的序列
+    if len(text_feature.shape) == 1:
+        text_feature = text_feature.reshape(1, -1) # 转换为 (1, 768)
+    
+    if text_feature.shape[0] < max_seq_len:
+        # 重复填充
+        repeat_times = (max_seq_len // text_feature.shape[0]) + 1
+        text_sequence = np.tile(text_feature, (repeat_times, 1))[:max_seq_len, :]
+    else:
+        # 截断
+        text_sequence = text_feature[:max_seq_len, :]
+    
+    return text_sequence.astype(np.float32)
+
 def convert_text_to_bert_format(text_feature, max_seq_len=50):
     """
     将768维BERT特征向量转换为伪BERT token格式
@@ -72,8 +96,9 @@ def process_sample(sample, audio_feature_dim=13, text_seq_len=50):
     """
     处理单个样本，转换为MMSA期望的格式
     """
-    # 1. 文本特征：转换为伪BERT格式
+    # 1. 文本特征：转换为伪BERT格式和序列格式
     text_bert = convert_text_to_bert_format(sample['text'], max_seq_len=text_seq_len)
+    text_sequence = convert_text_to_sequence_format(sample['text'], max_seq_len=text_seq_len)
     
     # 2. 音频特征：从波形提取MFCC
     audio_features = extract_audio_features(sample['audio_waveform'], n_mfcc=audio_feature_dim)
@@ -88,6 +113,7 @@ def process_sample(sample, audio_feature_dim=13, text_seq_len=50):
     
     result = {
         'text_bert': text_bert,
+        'text': text_sequence,  # 序列格式 [seq_len, dim]
         'audio': audio_features,
         'vision': vision_features,
         'regression_labels': regression_label,
@@ -152,11 +178,15 @@ def convert_dataset(input_file='train_12.16_1.pkl',
     # 使用分层划分保持标签分布（将回归标签转换为分类标签用于分层）
     classification_labels = [int((l + 1) / 2) for l in labels]  # -1->0, 1->1
     
+    # 使用新的随机种子重新划分数据集（从42改为123，确保划分不同）
+    split_seed = 123  # 修改此值可以改变数据集划分
+    print(f"   使用随机种子: {split_seed}")
+    
     train_data, temp_data, train_labels, temp_labels = train_test_split(
         processed_samples, classification_labels, 
         test_size=(1 - train_ratio), 
         stratify=classification_labels,
-        random_state=42
+        random_state=split_seed
     )
     
     valid_ratio_adjusted = valid_ratio / (valid_ratio + test_ratio)
@@ -164,7 +194,7 @@ def convert_dataset(input_file='train_12.16_1.pkl',
         temp_data, temp_labels,
         test_size=(1 - valid_ratio_adjusted),
         stratify=temp_labels,
-        random_state=42
+        random_state=split_seed + 100  # 使用不同的种子确保随机性
     )
     
     print(f"   训练集: {len(train_data)} 个样本")
@@ -177,6 +207,7 @@ def convert_dataset(input_file='train_12.16_1.pkl',
     def convert_to_mmsa_format(samples, mode):
         # 获取所有样本的特征
         text_bert_list = [s['text_bert'] for s in samples]
+        text_list = [s['text'] for s in samples]  # 获取text序列
         audio_list = [s['audio'] for s in samples]
         vision_list = [s['vision'] for s in samples]
         regression_labels = np.array([s['regression_labels'] for s in samples])
@@ -191,8 +222,10 @@ def convert_dataset(input_file='train_12.16_1.pkl',
         has_eda = 'eda' in samples[0] if len(samples) > 0 else False
         
         # 对齐序列长度（填充或截断）
-        # 文本：已经是固定长度 [3, seq_len]
+        # 文本BERT格式：已经是固定长度 [3, seq_len]
         text_bert = np.array(text_bert_list)  # [N, 3, seq_len]
+        # 文本序列格式：已经是固定长度 [seq_len, dim]
+        text = np.array(text_list)  # [N, seq_len, dim]
         
         # 音频：需要对齐
         max_audio_len = max([a.shape[0] for a in audio_list])
@@ -218,6 +251,7 @@ def convert_dataset(input_file='train_12.16_1.pkl',
         
         result = {
             'text_bert': text_bert,
+            'text': text,  # 序列格式 [N, seq_len, dim]
             'audio': audio,
             'vision': vision,
             'raw_text': raw_text_list,

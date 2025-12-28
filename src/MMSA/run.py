@@ -224,19 +224,71 @@ def MMSA_run(
             logger.info(f"Result for seed {seed}: {result}")
             model_results.append(result)
         criterions = list(model_results[0].keys())
+        
+        # 定义指标名称的中英文映射
+        metric_name_mapping = {
+            "Model": "模型",
+            "Has0_acc_2": "包含0的二分类准确率",
+            "Has0_F1_score": "包含0的F1分数",
+            "Non0_acc_2": "不包含0的二分类准确率",
+            "Non0_F1_score": "不包含0的F1分数",
+            "Mult_acc_5": "5级多分类准确率",
+            "Mult_acc_7": "7级多分类准确率",
+            "MAE": "平均绝对误差",
+            "Corr": "相关系数",
+            "Loss": "损失值",
+            "Label0_Precision": "标签0精确率",
+            "Label0_Recall": "标签0召回率",
+            "Label0_F1": "标签0_F1分数",
+            "Label1_Precision": "标签1精确率",
+            "Label1_Recall": "标签1召回率",
+            "Label1_F1": "标签1_F1分数",
+            "COPA_overall_acc": "COPA整体准确率",
+            "COPA_P1_acc": "COPA_P1准确率",
+            "COPA_P2_acc": "COPA_P2准确率",
+            "COPA_P3_acc": "COPA_P3准确率",
+            "COPA_P4_acc": "COPA_P4准确率",
+            "COPA_P5_acc": "COPA_P5准确率",
+            "COPA_P6_acc": "COPA_P6准确率",
+            "COPA_P7_acc": "COPA_P7准确率",
+            "COPA_P8_acc": "COPA_P8准确率",
+            "COPA_P9_acc": "COPA_P9准确率",
+            "COPA_P10_acc": "COPA_P10准确率",
+            "COPA_P11_acc": "COPA_P11准确率",
+            "COPA_P12_acc": "COPA_P12准确率",
+        }
+        
+        # 将指标名称转换为中文
+        chinese_criterions = [metric_name_mapping.get(c, c) for c in criterions]
+        model_col_name = metric_name_mapping.get("Model", "Model")
+        
         # save result to csv
         csv_file = res_save_dir / f"{dataset_name}.csv"
         if csv_file.is_file():
             df = pd.read_csv(csv_file)
+            # 检查是否有英文列名，如果有则转换为中文列名
+            if "Model" in df.columns:
+                # 重命名所有英文列名为中文
+                rename_dict = {}
+                for en_col, cn_col in metric_name_mapping.items():
+                    if en_col in df.columns:
+                        rename_dict[en_col] = cn_col
+                if rename_dict:
+                    df = df.rename(columns=rename_dict)
+            # 如果CSV中缺少某些列，添加这些列
+            for col in chinese_criterions:
+                if col not in df.columns:
+                    df[col] = None
         else:
-            df = pd.DataFrame(columns=["Model"] + criterions)
-        # save results
+            df = pd.DataFrame(columns=[model_col_name] + chinese_criterions)
+        
+        # 保存结果（使用原始英文键名从字典中取值）
         res = [model_name]
         for c in criterions:
             values = [r[c] for r in model_results]
             mean = round(np.mean(values)*100, 2)
-            std = round(np.std(values)*100, 2)
-            res.append((mean, std))
+            # 只保存均值，不保存标准差
+            res.append(mean)
         df.loc[len(df)] = res
         df.to_csv(csv_file, index=None)
         logger.info(f"Results saved to {csv_file}.")
