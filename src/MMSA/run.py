@@ -27,7 +27,7 @@ SUPPORTED_MODELS = [
     'LF_DNN', 'EF_LSTM', 'TFN', 'LMF', 'MFN', 'Graph_MFN', 'MFM',
     'MulT', 'MISA', 'BERT_MAG', 'MLF_DNN', 'MTFN', 'MLMF', 'Self_MM', 'MMIM'
 ]
-SUPPORTED_DATASETS = ['MOSI', 'MOSEI', 'SIMS', 'CUSTOM', 'TRAIN_12_16']
+SUPPORTED_DATASETS = ['MOSI', 'MOSEI', 'SIMS', 'CUSTOM', 'TRAIN_12_16', 'COPA_1231']
 
 logger = logging.getLogger('MMSA')
 
@@ -66,6 +66,7 @@ def MMSA_run(
     model_save_dir: str = Path().home() / "MMSA" / "saved_models",
     res_save_dir: str = Path().home() / "MMSA" / "results",
     log_dir: str = Path().home() / "MMSA" / "logs",
+    skip_validation: bool = False,
 ):
     """Train and Test MSA models.
 
@@ -175,7 +176,7 @@ def MMSA_run(
                 continue
             # actual running
             setup_seed(seeds[0])
-            result = _run(args, num_workers, is_tune)
+            result = _run(args, num_workers, is_tune, skip_validation=skip_validation)
             has_debuged.append(cur_param)
             # save result to csv file
             if Path(csv_file).is_file():
@@ -220,7 +221,7 @@ def MMSA_run(
             args['cur_seed'] = i + 1
             logger.info(f"{'-'*30} Running with seed {seed} [{i + 1}/{len(seeds)}] {'-'*30}")
             # actual running
-            result = _run(args, num_workers, is_tune)
+            result = _run(args, num_workers, is_tune, skip_validation=skip_validation)
             logger.info(f"Result for seed {seed}: {result}")
             model_results.append(result)
         criterions = list(model_results[0].keys())
@@ -264,10 +265,20 @@ def MMSA_run(
         
         # save result to csv
         csv_file = res_save_dir / f"{dataset_name}.csv"
+        
+        # 准备结果数据
+        res_dict = {model_col_name: model_name}
+        for c in criterions:
+            values = [r[c] for r in model_results]
+            mean = round(np.mean(values)*100, 2)
+            # 只保存均值，不保存标准差
+            cn_col = metric_name_mapping.get(c, c)
+            res_dict[cn_col] = mean
+        
         if csv_file.is_file():
             df = pd.read_csv(csv_file)
             # 检查是否有英文列名，如果有则转换为中文列名
-            if "Model" in df.columns:
+            if "Model" in df.columns or "模型" in df.columns:
                 # 重命名所有英文列名为中文
                 rename_dict = {}
                 for en_col, cn_col in metric_name_mapping.items():
@@ -275,26 +286,32 @@ def MMSA_run(
                         rename_dict[en_col] = cn_col
                 if rename_dict:
                     df = df.rename(columns=rename_dict)
-            # 如果CSV中缺少某些列，添加这些列
-            for col in chinese_criterions:
+            
+            # 确保DataFrame包含所有需要的列（包括新模型的列）
+            all_columns = [model_col_name] + chinese_criterions
+            for col in all_columns:
                 if col not in df.columns:
                     df[col] = None
+            
+            # 确保res_dict包含所有DataFrame的列（用None填充缺失的）
+            for col in df.columns:
+                if col not in res_dict:
+                    res_dict[col] = None
+            
+            # 按照DataFrame的列顺序构建结果行
+            res = [res_dict.get(col, None) for col in df.columns]
+            df.loc[len(df)] = res
         else:
+            # 创建新的DataFrame
             df = pd.DataFrame(columns=[model_col_name] + chinese_criterions)
+            res = [res_dict.get(col, None) for col in df.columns]
+            df.loc[len(df)] = res
         
-        # 保存结果（使用原始英文键名从字典中取值）
-        res = [model_name]
-        for c in criterions:
-            values = [r[c] for r in model_results]
-            mean = round(np.mean(values)*100, 2)
-            # 只保存均值，不保存标准差
-            res.append(mean)
-        df.loc[len(df)] = res
         df.to_csv(csv_file, index=None)
         logger.info(f"Results saved to {csv_file}.")
 
 
-def _run(args, num_workers=4, is_tune=False, from_sena=False):
+def _run(args, num_workers=4, is_tune=False, from_sena=False, skip_validation=False):
     # load data and models
     dataloader = MMDataLoader(args, num_workers)
     model = AMIO(args).to(args['device'])
@@ -306,6 +323,14 @@ def _run(args, num_workers=4, is_tune=False, from_sena=False):
     #                                   device_ids=args.gpu_ids,
     #                                   output_device=args.gpu_ids[0])
     trainer = ATIO().getTrain(args)
+    
+    # 传递 skip_validation 给 trainer
+    if hasattr(trainer, 'args'):
+        trainer.args.skip_validation = skip_validation
+    else:
+        # 如果 trainer 没有 args 属性，尝试直接设置
+        trainer.skip_validation = skip_validation
+
     # do train
     # epoch_results = trainer.do_train(model, dataloader)
     epoch_results = trainer.do_train(model, dataloader, return_epoch_results=from_sena)

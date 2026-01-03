@@ -24,13 +24,38 @@ def get_config_regression(
     with open(config_file, 'r') as f:
         config_all = json.load(f)
     model_common_args = config_all[model_name]['commonParams']
-    model_dataset_args = config_all[model_name]['datasetParams'][dataset_name]
-    dataset_args = config_all['datasetCommonParams'][dataset_name]
-    # use aligned feature if the model requires it, otherwise use unaligned feature
-    if model_common_args['need_data_aligned'] and 'aligned' in dataset_args:
-        dataset_args = dataset_args['aligned']
+    # 如果模型没有该数据集的配置，尝试使用fallback数据集
+    fallback_datasets = ['sims', 'mosi', 'mosei']  # fallback顺序
+    if dataset_name not in config_all[model_name]['datasetParams']:
+        # 尝试使用fallback数据集
+        model_dataset_args = {}
+        for fallback in fallback_datasets:
+            if fallback in config_all[model_name]['datasetParams']:
+                model_dataset_args = config_all[model_name]['datasetParams'][fallback].copy()
+                break
+        if not model_dataset_args:
+            raise KeyError(f"Model {model_name} has no configuration for dataset {dataset_name} and no fallback available")
     else:
-        dataset_args = dataset_args['unaligned']
+        model_dataset_args = config_all[model_name]['datasetParams'][dataset_name]
+    
+    # 数据集参数
+    if dataset_name not in config_all['datasetCommonParams']:
+        # 如果数据集不在commonParams中，尝试使用custom的配置
+        if 'custom' in config_all['datasetCommonParams']:
+            dataset_args = config_all['datasetCommonParams']['custom'].copy()
+            # 需要处理aligned/unaligned结构
+            if isinstance(dataset_args, dict) and 'unaligned' in dataset_args:
+                dataset_args = dataset_args['unaligned']
+        else:
+            raise KeyError(f"Dataset {dataset_name} not found in datasetCommonParams")
+    else:
+        dataset_args = config_all['datasetCommonParams'][dataset_name]
+    # use aligned feature if the model requires it, otherwise use unaligned feature
+    if isinstance(dataset_args, dict):
+        if model_common_args['need_data_aligned'] and 'aligned' in dataset_args:
+            dataset_args = dataset_args['aligned']
+        elif 'unaligned' in dataset_args:
+            dataset_args = dataset_args['unaligned']
 
     config = {}
     config['model_name'] = model_name

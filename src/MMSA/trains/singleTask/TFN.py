@@ -68,25 +68,38 @@ class TFN():
                 f"TRAIN-({self.args.model_name}) [{epochs - best_epoch}/{epochs}/{self.args.cur_seed}] >> loss: {round(train_loss, 4)} {dict_to_str(train_results)}"
             )
             # validation
-            val_results = self.do_test(model, dataloader['valid'], mode="VAL")
-            # save best model
-            cur_valid = val_results[self.args.KeyEval]
-            isBetter = cur_valid <= (best_valid - 1e-6) if min_or_max == 'min' else cur_valid >= (best_valid + 1e-6)
-            # save best model
-            if isBetter:
-                best_valid, best_epoch = cur_valid, epochs
-                # save model
+            if getattr(self.args, 'skip_validation', False):
+                # 如果跳过验证，直接保存当前模型
+                best_epoch = epochs
                 torch.save(model.cpu().state_dict(), self.args.model_save_path)
                 model.to(self.args.device)
-            # epoch results
-            if return_epoch_results:
-                train_results["Loss"] = train_loss
-                epoch_results['train'].append(train_results)
-                epoch_results['valid'].append(val_results)
-                test_results = self.do_test(model, dataloader['test'], mode="TEST")
-                epoch_results['test'].append(test_results)
+                
+                if return_epoch_results:
+                    train_results["Loss"] = train_loss
+                    epoch_results['train'].append(train_results)
+                    test_results = self.do_test(model, dataloader['test'], mode="TEST")
+                    epoch_results['test'].append(test_results)
+            else:
+                val_results = self.do_test(model, dataloader['valid'], mode="VAL")
+                # save best model
+                cur_valid = val_results[self.args.KeyEval]
+                isBetter = cur_valid <= (best_valid - 1e-6) if min_or_max == 'min' else cur_valid >= (best_valid + 1e-6)
+                # save best model
+                if isBetter:
+                    best_valid, best_epoch = cur_valid, epochs
+                    # save model
+                    torch.save(model.cpu().state_dict(), self.args.model_save_path)
+                    model.to(self.args.device)
+                # epoch results
+                if return_epoch_results:
+                    train_results["Loss"] = train_loss
+                    epoch_results['train'].append(train_results)
+                    epoch_results['valid'].append(val_results)
+                    test_results = self.do_test(model, dataloader['test'], mode="TEST")
+                    epoch_results['test'].append(test_results)
+            
             # early stop
-            if epochs - best_epoch >= self.args.early_stop:
+            if epochs - best_epoch >= self.args.early_stop or epochs >= getattr(self.args, 'max_epochs', 100):
                 return epoch_results if return_epoch_results else None
 
     def do_test(self, model, dataloader, mode="VAL", return_sample_results=False):
@@ -145,7 +158,7 @@ class TFN():
         eval_results["Loss"] = round(eval_loss, 4)
         
         # 如果是custom数据集，添加COPA评估
-        if self.args.dataset_name.lower() in ['custom', 'train_12_16']:
+        if self.args.dataset_name.lower() in ['custom', 'train_12_16', 'copa_1231']:
             try:
                 copa_metrics = MetricsTop(self.args.train_mode)
                 # 获取群体类型（从args中获取，默认为i1）

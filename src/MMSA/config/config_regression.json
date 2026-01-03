@@ -100,6 +100,19 @@
         "missing_rate": [0.2, 0.2, 0.2],
         "missing_seed": [1111, 1111, 1111]
       }
+    },
+    "copa_1231": {
+      "unaligned": {
+        "featurePath": "/root/autodl-tmp/data/copa_{mode}_1231_converted.pkl",
+        "seq_lens": [50, 512, 197],
+        "feature_dims": [768, 13, 768],
+        "train_samples": 12200,
+        "num_classes": 2,
+        "language": "cn",
+        "KeyEval": "Loss",
+        "missing_rate": [0.2, 0.2, 0.2],
+        "missing_seed": [1111, 1111, 1111]
+      }
     }
   },
   "tfn": {
@@ -156,6 +169,14 @@
         "post_fusion_dim": 64,
         "dropouts": [0.3, 0.3, 0.3, 0.5],
         "batch_size": 16,
+        "learning_rate": 0.001
+      },
+      "copa_1231": {
+        "hidden_dims": [128, 32, 128],
+        "text_out": 32,
+        "post_fusion_dim": 64,
+        "dropouts": [0.3, 0.3, 0.3, 0.5],
+        "batch_size": 32,
         "learning_rate": 0.001
       }
     }

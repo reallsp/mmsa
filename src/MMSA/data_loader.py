@@ -1,4 +1,5 @@
 import logging
+import os
 import pickle
 
 import numpy as np
@@ -20,6 +21,7 @@ class MMDataset(Dataset):
             'simsv2':self.__init_simsv2,
             'custom': self.__init_custom,
             'train_12_16': self.__init_custom,
+            'copa_1231': self.__init_custom,
         }
         DATASET_MAP[args['dataset_name']]()
 
@@ -119,58 +121,93 @@ class MMDataset(Dataset):
         return self.__init_mosi()
     
     def __init_custom(self):
-        """初始化自定义数据集 (train_12.16_1)"""
-        if self.args.get('custom_feature', None):
-            # use custom feature file
-            with open(self.args['custom_feature'], 'rb') as f:
-                data = pickle.load(f)
+        """初始化自定义数据集 (支持独立模式文件加载)"""
+        feature_path = self.args.get('custom_feature') or self.args.get('featurePath')
+        
+        # 支持路径占位符，如 "copa_{mode}_converted.pkl"
+        if "{mode}" in str(feature_path):
+            current_file = str(feature_path).format(mode=self.mode)
         else:
-            # use default feature file specified in config file
-            with open(self.args['featurePath'], 'rb') as f:
-                data = pickle.load(f)
+            # 如果是独立文件模式，尝试查找针对当前 mode 的文件
+            # 例如 featurePath 是 "copa_1231_converted.pkl"，而我们需要加载 "train"
+            # 逻辑：如果直接加载失败且文件不存在，尝试寻找包含 mode 名的文件
+            current_file = feature_path
+            if not os.path.exists(current_file):
+                # 尝试自动补全模式名，例如：/path/to/data_train.pkl
+                base, ext = os.path.splitext(current_file)
+                mode_specific = f"{base}_{self.mode}{ext}"
+                if os.path.exists(mode_specific):
+                    current_file = mode_specific
+                elif self.mode == 'valid' and not os.path.exists(current_file):
+                    # 如果验证集文件不存在，尝试用测试集代替
+                    mode_specific = f"{base}_test{ext}"
+                    if os.path.exists(mode_specific):
+                        current_file = mode_specific
+
+        logger.info(f"Loading {self.mode} data from {current_file}")
+        with open(current_file, 'rb') as f:
+            data = pickle.load(f)
+        
+        # 兼容性处理：有些 pkl 只有单层 dict，有些包裹了 mode 层
+        if self.mode in data:
+            data_mode = data[self.mode]
+        elif len(data.keys()) == 1:
+            # 如果只有一个 key（如 'test'），直接使用该 key 的内容
+            data_mode = list(data.values())[0]
+        else:
+            data_mode = data
         
         # 加载文本特征
         # 优先使用text字段（序列格式 [N, seq_len, dim]），如果不支持BERT的模型使用
         # 如果use_bert为True，则使用text_bert字段（[N, 3, seq_len]）
-        if self.args.get('use_bert', None) and 'text_bert' in data[self.mode]:
-            self.text = data[self.mode]['text_bert'].astype(np.float32)
+        if self.args.get('use_bert', None) and 'text_bert' in data_mode:
+            self.text = data_mode['text_bert'].astype(np.float32)
             # text_bert格式是[N, 3, seq_len]
             # 特征维度设置为768（BERT维度）
             self.args['feature_dims'][0] = 768
-        elif 'text' in data[self.mode]:
-            self.text = data[self.mode]['text'].astype(np.float32)
+        elif 'text' in data_mode:
+            self.text = data_mode['text'].astype(np.float32)
             # text格式是[N, seq_len, dim]
             self.args['feature_dims'][0] = self.text.shape[2] if len(self.text.shape) > 2 else self.text.shape[1]
-        elif 'text_bert' in data[self.mode]:
+        elif 'text_bert' in data_mode:
             # 如果没有text字段但有text_bert，作为fallback使用text_bert
-            self.text = data[self.mode]['text_bert'].astype(np.float32)
+            self.text = data_mode['text_bert'].astype(np.float32)
+            # 特征维度设置为768（BERT维度）
             self.args['feature_dims'][0] = 768
         else:
             raise ValueError(f"No text feature found in {self.mode} data")
         
         # 加载音频特征
-        self.audio = data[self.mode]['audio'].astype(np.float32)
+        self.audio = data_mode['audio'].astype(np.float32)
         self.args['feature_dims'][1] = self.audio.shape[2]
         
         # 加载视觉特征
-        self.vision = data[self.mode]['vision'].astype(np.float32)
+        self.vision = data_mode['vision'].astype(np.float32)
         self.args['feature_dims'][2] = self.vision.shape[2]
         
+        # 加载额外模态 (保留全部特征)
+        self.extra_features = {}
+        for k in ['ir_feature', 'bio', 'eye', 'eeg', 'eda']:
+            if k in data_mode:
+                self.extra_features[k] = data_mode[k].astype(np.float32)
+                if not self.args['need_data_aligned']:
+                    self.extra_features[f'{k}_lengths'] = data_mode.get(f'{k}_lengths', [self.extra_features[k].shape[1]] * len(self.audio))
+        
         # 加载其他字段
-        self.raw_text = data[self.mode].get('raw_text', [''] * len(self.audio))
-        self.ids = data[self.mode].get('id', [f'sample_{i}' for i in range(len(self.audio))])
+        self.raw_text = data_mode.get('raw_text', [''] * len(self.audio))
+        self.ids = data_mode.get('id', [f'sample_{i}' for i in range(len(self.audio))])
         
         # 加载标签
         self.labels = {
-            'M': np.array(data[self.mode]['regression_labels']).astype(np.float32)
+            'M': np.array(data_mode['regression_labels']).astype(np.float32)
         }
         
         logger.info(f"{self.mode} samples: {self.labels['M'].shape}")
         
         # 加载序列长度信息（如果存在）
         if not self.args['need_data_aligned']:
-            self.audio_lengths = data[self.mode].get('audio_lengths', [self.audio.shape[1]] * len(self.audio))
-            self.vision_lengths = data[self.mode].get('vision_lengths', [self.vision.shape[1]] * len(self.vision))
+            self.audio_lengths = data_mode.get('audio_lengths', [self.audio.shape[1]] * len(self.audio))
+            self.vision_lengths = data_mode.get('vision_lengths', [self.vision.shape[1]] * len(self.vision))
             # 确保audio_lengths是列表
             if isinstance(self.audio_lengths, np.ndarray):
                 self.audio_lengths = list(self.audio_lengths)
@@ -270,6 +307,15 @@ class MMDataset(Dataset):
             'id': self.ids[index],
             'labels': {k: torch.Tensor(v[index].reshape(-1)) for k, v in self.labels.items()}
         } 
+        
+        # 添加额外模态
+        if hasattr(self, 'extra_features'):
+            for k, v in self.extra_features.items():
+                if k.endswith('_lengths'):
+                    sample[k] = v[index]
+                else:
+                    sample[k] = torch.Tensor(v[index])
+
         if not self.args['need_data_aligned']:
             sample['audio_lengths'] = self.audio_lengths[index]
             sample['vision_lengths'] = self.vision_lengths[index]
