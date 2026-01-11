@@ -4,114 +4,258 @@
     "mosi": {
       "aligned": {
         "featurePath": "MOSI/Processed/aligned_50.pkl",
-        "seq_lens": [50, 50, 50],
-        "feature_dims": [768, 5, 20],
+        "seq_lens": [
+          50,
+          50,
+          50
+        ],
+        "feature_dims": [
+          768,
+          5,
+          20
+        ],
         "train_samples": 1284,
         "num_classes": 3,
         "language": "en",
         "KeyEval": "Loss",
-        "missing_rate": [0.2, 0.2, 0.2],
-        "missing_seed": [1111, 1111, 1111]
+        "missing_rate": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "missing_seed": [
+          1111,
+          1111,
+          1111
+        ]
       },
       "unaligned": {
         "featurePath": "MOSI/Processed/unaligned_50.pkl",
-        "seq_lens": [50, 500, 375],
-        "feature_dims": [768, 5, 20],
+        "seq_lens": [
+          50,
+          500,
+          375
+        ],
+        "feature_dims": [
+          768,
+          5,
+          20
+        ],
         "train_samples": 1284,
         "num_classes": 3,
         "language": "en",
         "KeyEval": "Loss",
-        "missing_rate": [0.2, 0.2, 0.2],
-        "missing_seed": [1111, 1111, 1111]
+        "missing_rate": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "missing_seed": [
+          1111,
+          1111,
+          1111
+        ]
       }
     },
     "mosei": {
       "aligned": {
         "featurePath": "MOSEI/Processed/aligned_50.pkl",
-        "seq_lens": [50, 50, 50],
-        "feature_dims": [768, 74, 35],
+        "seq_lens": [
+          50,
+          50,
+          50
+        ],
+        "feature_dims": [
+          768,
+          74,
+          35
+        ],
         "train_samples": 16326,
         "num_classes": 3,
         "language": "en",
         "KeyEval": "Loss",
-        "missing_rate": [0.2, 0.2, 0.2],
-        "missing_seed": [1111, 1111, 1111]
+        "missing_rate": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "missing_seed": [
+          1111,
+          1111,
+          1111
+        ]
       },
       "unaligned": {
         "featurePath": "MOSEI/Processed/unaligned_50.pkl",
-        "seq_lens": [50, 500, 375],
-        "feature_dims": [768, 74, 35],
+        "seq_lens": [
+          50,
+          500,
+          375
+        ],
+        "feature_dims": [
+          768,
+          74,
+          35
+        ],
         "train_samples": 16326,
         "num_classes": 3,
         "language": "en",
         "KeyEval": "Loss",
-        "missing_rate": [0.2, 0.2, 0.2],
-        "missing_seed": [1111, 1111, 1111]
+        "missing_rate": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "missing_seed": [
+          1111,
+          1111,
+          1111
+        ]
       }
     },
     "sims": {
       "unaligned": {
         "featurePath": "SIMS/Processed/unaligned_39.pkl",
-        "seq_lens": [39, 400, 55],
-        "feature_dims": [768, 33, 709],
+        "seq_lens": [
+          39,
+          400,
+          55
+        ],
+        "feature_dims": [
+          768,
+          33,
+          709
+        ],
         "train_samples": 1368,
         "num_classes": 3,
         "language": "cn",
         "KeyEval": "Loss",
-        "missing_rate": [0.2, 0.2, 0.2],
-        "missing_seed": [1111, 1111, 1111]
+        "missing_rate": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "missing_seed": [
+          1111,
+          1111,
+          1111
+        ]
       }
     },
     "simsv2": {
       "unaligned": {
         "featurePath": "SIMSv2/Processed/sims_unaligned.pkl",
-        "seq_lens": [39, 400, 55],
-        "feature_dims": [768, 33, 709],
+        "seq_lens": [
+          39,
+          400,
+          55
+        ],
+        "feature_dims": [
+          768,
+          33,
+          709
+        ],
         "train_samples": 2722,
         "num_classes": 3,
         "language": "cn",
         "KeyEval": "Loss",
-        "missing_rate": [0.2, 0.2, 0.2],
-        "missing_seed": [1111, 1111, 1111]
+        "missing_rate": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "missing_seed": [
+          1111,
+          1111,
+          1111
+        ]
       }
     },
     "custom": {
       "unaligned": {
         "featurePath": "train_12.16_1_converted.pkl",
-        "seq_lens": [50, 512, 197],
-        "feature_dims": [768, 13, 768],
+        "seq_lens": [
+          50,
+          512,
+          197
+        ],
+        "feature_dims": [
+          768,
+          13,
+          768
+        ],
         "train_samples": 256,
         "num_classes": 2,
         "language": "en",
         "KeyEval": "Loss",
-        "missing_rate": [0.2, 0.2, 0.2],
-        "missing_seed": [1111, 1111, 1111]
+        "missing_rate": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "missing_seed": [
+          1111,
+          1111,
+          1111
+        ]
       }
     },
     "train_12_16": {
       "unaligned": {
         "featurePath": "train_12.16_1_converted.pkl",
-        "seq_lens": [50, 512, 197],
-        "feature_dims": [768, 13, 768],
+        "seq_lens": [
+          50,
+          512,
+          197
+        ],
+        "feature_dims": [
+          768,
+          13,
+          768
+        ],
         "train_samples": 256,
         "num_classes": 2,
         "language": "en",
         "KeyEval": "Loss",
-        "missing_rate": [0.2, 0.2, 0.2],
-        "missing_seed": [1111, 1111, 1111]
+        "missing_rate": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "missing_seed": [
+          1111,
+          1111,
+          1111
+        ]
       }
     },
     "copa_1231": {
       "unaligned": {
         "featurePath": "/root/autodl-tmp/data/copa_{mode}_1231_converted.pkl",
-        "seq_lens": [50, 512, 197],
-        "feature_dims": [768, 13, 768],
+        "seq_lens": [
+          50,
+          512,
+          197
+        ],
+        "feature_dims": [
+          768,
+          13,
+          768
+        ],
         "train_samples": 12200,
         "num_classes": 2,
         "language": "cn",
         "KeyEval": "Loss",
-        "missing_rate": [0.2, 0.2, 0.2],
-        "missing_seed": [1111, 1111, 1111]
+        "missing_rate": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "missing_seed": [
+          1111,
+          1111,
+          1111
+        ]
       }
     }
   },
@@ -124,58 +268,121 @@
     },
     "datasetParams": {
       "mosi": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "text_out": 32,
         "post_fusion_dim": 64,
-        "dropouts": [0.3, 0.3, 0.3, 0.5],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3,
+          0.5
+        ],
         "batch_size": 32,
         "learning_rate": 0.001
       },
       "mosei": {
-        "hidden_dims": [128, 16, 128],
+        "hidden_dims": [
+          128,
+          16,
+          128
+        ],
         "text_out": 128,
         "post_fusion_dim": 16,
-        "dropouts": [0.4, 0.4, 0.4, 0.4],
+        "dropouts": [
+          0.4,
+          0.4,
+          0.4,
+          0.4
+        ],
         "batch_size": 128,
         "learning_rate": 0.005
       },
       "sims": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "text_out": 256,
         "post_fusion_dim": 32,
-        "dropouts": [0.4, 0.4, 0.4, 0.4],
+        "dropouts": [
+          0.4,
+          0.4,
+          0.4,
+          0.4
+        ],
         "batch_size": 32,
         "learning_rate": 0.0005
       },
       "simsv2": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "text_out": 128,
         "post_fusion_dim": 32,
-        "dropouts": [0.3, 0.3, 0.3, 0.5],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3,
+          0.5
+        ],
         "batch_size": 128,
         "learning_rate": 0.002
       },
       "custom": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "text_out": 32,
         "post_fusion_dim": 64,
-        "dropouts": [0.3, 0.3, 0.3, 0.5],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3,
+          0.5
+        ],
         "batch_size": 16,
         "learning_rate": 0.001
       },
       "train_12_16": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "text_out": 32,
         "post_fusion_dim": 64,
-        "dropouts": [0.3, 0.3, 0.3, 0.5],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3,
+          0.5
+        ],
         "batch_size": 16,
         "learning_rate": 0.001
       },
       "copa_1231": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "text_out": 32,
         "post_fusion_dim": 64,
-        "dropouts": [0.3, 0.3, 0.3, 0.5],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3,
+          0.5
+        ],
         "batch_size": 32,
         "learning_rate": 0.001
       }
@@ -190,8 +397,17 @@
     },
     "datasetParams": {
       "mosi": {
-        "hidden_dims": [128, 16, 128],
-        "dropouts": [0.3, 0.3, 0.3, 0.3],
+        "hidden_dims": [
+          128,
+          16,
+          128
+        ],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3,
+          0.3
+        ],
         "rank": 3,
         "batch_size": 64,
         "learning_rate": 0.001,
@@ -199,8 +415,17 @@
         "weight_decay": 0.005
       },
       "mosei": {
-        "hidden_dims": [128, 16, 128],
-        "dropouts": [0.2, 0.2, 0.2, 0.2],
+        "hidden_dims": [
+          128,
+          16,
+          128
+        ],
+        "dropouts": [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
         "rank": 4,
         "batch_size": 32,
         "learning_rate": 0.001,
@@ -208,8 +433,17 @@
         "weight_decay": 0.001
       },
       "sims": {
-        "hidden_dims": [64, 16, 64],
-        "dropouts": [0.2, 0.2, 0.2, 0.2],
+        "hidden_dims": [
+          64,
+          16,
+          64
+        ],
+        "dropouts": [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
         "rank": 4,
         "batch_size": 64,
         "learning_rate": 0.002,
@@ -217,8 +451,17 @@
         "weight_decay": 0.005
       },
       "simsv2": {
-        "hidden_dims": [64, 32, 64],
-        "dropouts": [0.3, 0.3, 0.3, 0.5],
+        "hidden_dims": [
+          64,
+          32,
+          64
+        ],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3,
+          0.5
+        ],
         "rank": 4,
         "batch_size": 32,
         "learning_rate": 0.002,
@@ -236,7 +479,11 @@
     },
     "datasetParams": {
       "mosi": {
-        "hidden_dims": [256, 32, 256],
+        "hidden_dims": [
+          256,
+          32,
+          256
+        ],
         "memsize": 400,
         "windowsize": 2,
         "NN1Config": {
@@ -264,7 +511,11 @@
         "weight_decay": 0.0
       },
       "mosei": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "memsize": 128,
         "windowsize": 2,
         "NN1Config": {
@@ -292,7 +543,11 @@
         "weight_decay": 0.0001
       },
       "sims": {
-        "hidden_dims": [64, 16, 64],
+        "hidden_dims": [
+          64,
+          16,
+          64
+        ],
         "memsize": 64,
         "windowsize": 2,
         "NN1Config": {
@@ -320,7 +575,11 @@
         "weight_decay": 0.0
       },
       "simsv2": {
-        "hidden_dims": [128, 16, 128],
+        "hidden_dims": [
+          128,
+          16,
+          128
+        ],
         "memsize": 400,
         "windowsize": 2,
         "NN1Config": {
@@ -401,37 +660,73 @@
     },
     "datasetParams": {
       "mosi": {
-        "hidden_dims": [128, 16, 128],
+        "hidden_dims": [
+          128,
+          16,
+          128
+        ],
         "text_out": 256,
         "post_fusion_dim": 128,
-        "dropouts": [0.2, 0.2, 0.2, 0.2],
+        "dropouts": [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
         "batch_size": 128,
         "learning_rate": 0.001,
         "weight_decay": 0.01
       },
       "mosei": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "text_out": 128,
         "post_fusion_dim": 128,
-        "dropouts": [0.2, 0.2, 0.2, 0.2],
+        "dropouts": [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
         "batch_size": 64,
         "learning_rate": 0.002,
         "weight_decay": 0.001
       },
       "sims": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "text_out": 256,
         "post_fusion_dim": 32,
-        "dropouts": [0.3, 0.3, 0.3, 0.5],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3,
+          0.5
+        ],
         "batch_size": 128,
         "learning_rate": 0.005,
         "weight_decay": 0.005
       },
       "simsv2": {
-        "hidden_dims": [64, 32, 64],
+        "hidden_dims": [
+          64,
+          32,
+          64
+        ],
         "text_out": 256,
         "post_fusion_dim": 32,
-        "dropouts": [0.4, 0.4, 0.4, 0.4],
+        "dropouts": [
+          0.4,
+          0.4,
+          0.4,
+          0.4
+        ],
         "batch_size": 128,
         "learning_rate": 0.005,
         "weight_decay": 0.0
@@ -447,7 +742,11 @@
     },
     "datasetParams": {
       "mosi": {
-        "hidden_dims": [256, 32, 256],
+        "hidden_dims": [
+          256,
+          32,
+          256
+        ],
         "memsize": 300,
         "inner_node_dim": 64,
         "NNConfig": {
@@ -471,7 +770,11 @@
         "weight_decay": 0.005
       },
       "mosei": {
-        "hidden_dims": [64, 16, 64],
+        "hidden_dims": [
+          64,
+          16,
+          64
+        ],
         "memsize": 300,
         "inner_node_dim": 128,
         "NNConfig": {
@@ -495,7 +798,11 @@
         "weight_decay": 0.001
       },
       "sims": {
-        "hidden_dims": [256, 32, 256],
+        "hidden_dims": [
+          256,
+          32,
+          256
+        ],
         "memsize": 64,
         "inner_node_dim": 128,
         "NNConfig": {
@@ -519,7 +826,11 @@
         "weight_decay": 0.001
       },
       "simsv2": {
-        "hidden_dims": [64, 16, 64],
+        "hidden_dims": [
+          64,
+          16,
+          64
+        ],
         "memsize": 400,
         "inner_node_dim": 32,
         "NNConfig": {
@@ -556,7 +867,7 @@
     "datasetParams": {
       "mosi": {
         "batch_size": 32,
-        "learning_rate": 2e-5,
+        "learning_rate": 2e-05,
         "beta_shift": 1,
         "dropout_prob": 0.3,
         "transformers": "bert",
@@ -564,7 +875,7 @@
       },
       "mosei": {
         "batch_size": 32,
-        "learning_rate": 1e-5,
+        "learning_rate": 1e-05,
         "beta_shift": 1,
         "dropout_prob": 0.2,
         "transformers": "bert",
@@ -572,7 +883,7 @@
       },
       "sims": {
         "batch_size": 32,
-        "learning_rate": 5e-5,
+        "learning_rate": 5e-05,
         "beta_shift": 1,
         "dropout_prob": 0.1,
         "transformers": "bert",
@@ -597,7 +908,10 @@
         "relu_dropout": 0.0,
         "embed_dropout": 0.2,
         "res_dropout": 0.0,
-        "dst_feature_dim_nheads": [50, 10],
+        "dst_feature_dim_nheads": [
+          50,
+          10
+        ],
         "batch_size": 16,
         "learning_rate": 0.002,
         "nlevels": 4,
@@ -619,7 +933,10 @@
         "relu_dropout": 0.0,
         "embed_dropout": 0.0,
         "res_dropout": 0.0,
-        "dst_feature_dim_nheads": [30, 6],
+        "dst_feature_dim_nheads": [
+          30,
+          6
+        ],
         "batch_size": 4,
         "learning_rate": 0.0005,
         "nlevels": 4,
@@ -641,7 +958,10 @@
         "relu_dropout": 0.0,
         "embed_dropout": 0.1,
         "res_dropout": 0.2,
-        "dst_feature_dim_nheads": [50, 10],
+        "dst_feature_dim_nheads": [
+          50,
+          10
+        ],
         "batch_size": 16,
         "learning_rate": 0.002,
         "nlevels": 2,
@@ -663,7 +983,10 @@
         "relu_dropout": 0.1,
         "embed_dropout": 0.2,
         "res_dropout": 0.0,
-        "dst_feature_dim_nheads": [30, 6],
+        "dst_feature_dim_nheads": [
+          30,
+          6
+        ],
         "batch_size": 16,
         "learning_rate": 0.0005,
         "nlevels": 4,
@@ -719,7 +1042,7 @@
         "sp_weight": 1.0,
         "recon_weight": 1.0,
         "grad_clip": 0.8,
-        "weight_decay": 5e-5,
+        "weight_decay": 5e-05,
         "transformers": "bert",
         "pretrained": "bert-base-uncased"
       },
@@ -734,7 +1057,7 @@
         "sp_weight": 1.0,
         "recon_weight": 0.8,
         "grad_clip": 1.0,
-        "weight_decay": 5e-5,
+        "weight_decay": 5e-05,
         "transformers": "bert",
         "pretrained": "bert-base-chinese"
       },
@@ -749,7 +1072,7 @@
         "sp_weight": 0.0,
         "recon_weight": 0.5,
         "grad_clip": 0.8,
-        "weight_decay": 5e-5,
+        "weight_decay": 5e-05,
         "transformers": "bert",
         "pretrained": "bert-base-chinese"
       }
@@ -764,7 +1087,11 @@
     },
     "datasetParams": {
       "mosi": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "zy_size": 80,
         "zl_size": 64,
         "za_size": 80,
@@ -809,7 +1136,11 @@
         "weight_decay": 0.001
       },
       "mosei": {
-        "hidden_dims": [256, 32, 256],
+        "hidden_dims": [
+          256,
+          32,
+          256
+        ],
         "zy_size": 32,
         "zl_size": 256,
         "za_size": 80,
@@ -854,7 +1185,11 @@
         "weight_decay": 0.0005
       },
       "sims": {
-        "hidden_dims": [64, 16, 64],
+        "hidden_dims": [
+          64,
+          16,
+          64
+        ],
         "zy_size": 48,
         "zl_size": 256,
         "za_size": 32,
@@ -909,14 +1244,27 @@
     },
     "datasetParams": {
       "sims": {
-        "hidden_dims": [256, 32, 256],
+        "hidden_dims": [
+          256,
+          32,
+          256
+        ],
         "text_out": 256,
         "post_fusion_dim": 64,
         "post_text_dim": 64,
         "post_audio_dim": 4,
         "post_video_dim": 8,
-        "dropouts": [0.2, 0.2, 0.2],
-        "post_dropouts": [0.2, 0.2, 0.2, 0.2],
+        "dropouts": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "post_dropouts": [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
         "batch_size": 64,
         "learning_rate": 0.005,
         "M": 0.6,
@@ -925,25 +1273,38 @@
         "V": 1.0,
         "text_weight_decay": 0.001,
         "audio_weight_decay": 0.0001,
-        "video_weight_decay": 1e-5,
+        "video_weight_decay": 1e-05,
         "weight_decay": 0.005
       },
       "simsv2": {
-        "hidden_dims": [64, 16, 64],
+        "hidden_dims": [
+          64,
+          16,
+          64
+        ],
         "text_out": 32,
         "post_fusion_dim": 64,
         "post_text_dim": 16,
         "post_audio_dim": 5,
         "post_video_dim": 64,
-        "dropouts": [0.3, 0.3, 0.3],
-        "post_dropouts": [0.5, 0.5, 0.5, 0.5],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3
+        ],
+        "post_dropouts": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
         "batch_size": 32,
         "learning_rate": 0.0005,
         "M": 1.0,
         "T": 0.4,
         "A": 0.4,
         "V": 0.8,
-        "text_weight_decay": 0.00001,
+        "text_weight_decay": 1e-05,
         "audio_weight_decay": 0.0001,
         "video_weight_decay": 0.0001,
         "weight_decay": 0.01
@@ -959,12 +1320,25 @@
     },
     "datasetParams": {
       "sims": {
-        "hidden_dims": [256, 32, 256],
+        "hidden_dims": [
+          256,
+          32,
+          256
+        ],
         "post_text_dim": 8,
         "post_audio_dim": 4,
         "post_video_dim": 32,
-        "post_dropouts": [0.4, 0.4, 0.4, 0.4],
-        "dropouts": [0.3, 0.3, 0.3],
+        "post_dropouts": [
+          0.4,
+          0.4,
+          0.4,
+          0.4
+        ],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3
+        ],
         "rank": 3,
         "batch_size": 128,
         "learning_rate": 0.001,
@@ -979,12 +1353,25 @@
         "weight_decay": 0.005
       },
       "simsv2": {
-        "hidden_dims": [64, 16, 64],
+        "hidden_dims": [
+          64,
+          16,
+          64
+        ],
         "post_text_dim": 16,
         "post_audio_dim": 5,
         "post_video_dim": 16,
-        "post_dropouts": [0.4, 0.4, 0.4, 0.4],
-        "dropouts": [0.3, 0.3, 0.3],
+        "post_dropouts": [
+          0.4,
+          0.4,
+          0.4,
+          0.4
+        ],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3
+        ],
         "rank": 6,
         "batch_size": 64,
         "learning_rate": 0.005,
@@ -994,8 +1381,8 @@
         "A": 0.4,
         "V": 1.0,
         "text_weight_decay": 0.0,
-        "audio_weight_decay": 0.00001,
-        "video_weight_decay": 0.00001,
+        "audio_weight_decay": 1e-05,
+        "video_weight_decay": 1e-05,
         "weight_decay": 0.001
       }
     }
@@ -1009,14 +1396,27 @@
     },
     "datasetParams": {
       "sims": {
-        "hidden_dims": [64, 32, 64],
+        "hidden_dims": [
+          64,
+          32,
+          64
+        ],
         "text_out": 32,
         "post_fusion_dim": 32,
         "post_text_dim": 16,
         "post_audio_dim": 4,
         "post_video_dim": 32,
-        "dropouts": [0.3, 0.3, 0.3],
-        "post_dropouts": [0.5, 0.5, 0.5, 0.5],
+        "dropouts": [
+          0.3,
+          0.3,
+          0.3
+        ],
+        "post_dropouts": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
         "batch_size": 32,
         "learning_rate": 0.002,
         "M": 0.6,
@@ -1029,14 +1429,27 @@
         "weight_decay": 0.0
       },
       "simsv2": {
-        "hidden_dims": [128, 32, 128],
+        "hidden_dims": [
+          128,
+          32,
+          128
+        ],
         "text_out": 32,
         "post_fusion_dim": 64,
         "post_text_dim": 32,
         "post_audio_dim": 4,
         "post_video_dim": 64,
-        "dropouts": [0.2, 0.2, 0.2],
-        "post_dropouts": [0.3, 0.3, 0.3, 0.3],
+        "dropouts": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "post_dropouts": [
+          0.3,
+          0.3,
+          0.3,
+          0.3
+        ],
         "batch_size": 64,
         "learning_rate": 0.005,
         "M": 0.8,
@@ -1044,8 +1457,8 @@
         "A": 0.6,
         "V": 0.8,
         "text_weight_decay": 0.0,
-        "audio_weight_decay": 0.00001,
-        "video_weight_decay": 0.00001,
+        "audio_weight_decay": 1e-05,
+        "video_weight_decay": 1e-05,
         "weight_decay": 0.0001
       }
     }
@@ -1065,7 +1478,7 @@
     "datasetParams": {
       "mosi": {
         "batch_size": 16,
-        "learning_rate_bert": 5e-5,
+        "learning_rate_bert": 5e-05,
         "learning_rate_audio": 0.005,
         "learning_rate_video": 0.005,
         "learning_rate_other": 0.001,
@@ -1097,7 +1510,7 @@
       },
       "mosei": {
         "batch_size": 32,
-        "learning_rate_bert": 5e-5,
+        "learning_rate_bert": 5e-05,
         "learning_rate_audio": 0.005,
         "learning_rate_video": 0.0001,
         "learning_rate_other": 0.001,
@@ -1129,7 +1542,7 @@
       },
       "sims": {
         "batch_size": 32,
-        "learning_rate_bert": 5e-5,
+        "learning_rate_bert": 5e-05,
         "learning_rate_audio": 0.005,
         "learning_rate_video": 0.005,
         "learning_rate_other": 0.001,
@@ -1161,7 +1574,7 @@
       },
       "simsv2": {
         "batch_size": 16,
-        "learning_rate_bert": 5e-5,
+        "learning_rate_bert": 5e-05,
         "learning_rate_audio": 0.001,
         "learning_rate_video": 0.001,
         "learning_rate_other": 0.001,
@@ -1221,18 +1634,16 @@
         "mmilb_mid_activation": "ReLU",
         "mmilb_last_activation": "Tanh",
         "cpc_activation": "Tanh",
-
         "batch_size": 32,
         "grad_clip": 1.0,
-        "lr_main": 1e-3,
-        "weight_decay_main": 1e-4,
-        "lr_bert": 5e-5,
-        "weight_decay_bert": 1e-4,
-        "lr_mmilb": 1e-3,
-        "weight_decay_mmilb": 1e-4,
+        "lr_main": 0.001,
+        "weight_decay_main": 0.0001,
+        "lr_bert": 5e-05,
+        "weight_decay_bert": 0.0001,
+        "lr_mmilb": 0.001,
+        "weight_decay_mmilb": 0.0001,
         "optim": "Adam",
         "when": 20,
-
         "alpha": 0.1,
         "beta": 0.1,
         "transformers": "bert",
@@ -1253,18 +1664,16 @@
         "mmilb_mid_activation": "ReLU",
         "mmilb_last_activation": "Tanh",
         "cpc_activation": "Tanh",
-
         "batch_size": 32,
         "grad_clip": 1.0,
-        "lr_main": 1e-3,
-        "weight_decay_main": 1e-4,
-        "lr_bert": 5e-5,
-        "weight_decay_bert": 1e-4,
-        "lr_mmilb": 1e-3,
-        "weight_decay_mmilb": 1e-4,
+        "lr_main": 0.001,
+        "weight_decay_main": 0.0001,
+        "lr_bert": 5e-05,
+        "weight_decay_bert": 0.0001,
+        "lr_mmilb": 0.001,
+        "weight_decay_mmilb": 0.0001,
         "optim": "Adam",
         "when": 20,
-
         "alpha": 0.1,
         "beta": 0.1,
         "transformers": "bert",
@@ -1285,18 +1694,16 @@
         "mmilb_mid_activation": "ReLU",
         "mmilb_last_activation": "Tanh",
         "cpc_activation": "Tanh",
-
         "batch_size": 32,
         "grad_clip": 1.0,
-        "lr_main": 1e-3,
-        "weight_decay_main": 1e-4,
-        "lr_bert": 5e-5,
-        "weight_decay_bert": 1e-4,
-        "lr_mmilb": 1e-3,
-        "weight_decay_mmilb": 1e-4,
+        "lr_main": 0.001,
+        "weight_decay_main": 0.0001,
+        "lr_bert": 5e-05,
+        "weight_decay_bert": 0.0001,
+        "lr_mmilb": 0.001,
+        "weight_decay_mmilb": 0.0001,
         "optim": "Adam",
         "when": 20,
-
         "alpha": 0.1,
         "beta": 0.1,
         "transformers": "bert",
@@ -1358,7 +1765,10 @@
         "relu_dropout": 0.2,
         "embed_dropout": 0.2,
         "res_dropout": 0.2,
-        "dst_feature_dim_nheads": [30, 6],
+        "dst_feature_dim_nheads": [
+          30,
+          6
+        ],
         "nlevels": 3,
         "fusion_t_in": 90,
         "fusion_a_in": 90,
@@ -1373,12 +1783,16 @@
         "cls_dropout": 0.0,
         "grad_clip": 0.8,
         "batch_size": 24,
-        "learning_rate_bert": 2e-6,
+        "learning_rate_bert": 2e-06,
         "learning_rate_other": 0.001,
         "patience": 5,
         "weight_decay_bert": 0.0001,
         "weight_decay_other": 0.001,
-        "weight_gen_loss": [5, 2, 20],
+        "weight_gen_loss": [
+          5,
+          2,
+          20
+        ],
         "weight_sim_loss": 5,
         "num_temporal_head": 25
       },
@@ -1394,7 +1808,10 @@
         "relu_dropout": 0.2,
         "embed_dropout": 0.2,
         "res_dropout": 0.2,
-        "dst_feature_dim_nheads": [30, 6],
+        "dst_feature_dim_nheads": [
+          30,
+          6
+        ],
         "nlevels": 3,
         "fusion_t_in": 90,
         "fusion_a_in": 90,
@@ -1409,12 +1826,16 @@
         "cls_dropout": 0.0,
         "grad_clip": 0.8,
         "batch_size": 24,
-        "learning_rate_bert": 1e-5,
+        "learning_rate_bert": 1e-05,
         "learning_rate_other": 0.002,
         "patience": 5,
         "weight_decay_bert": 0.0001,
         "weight_decay_other": 0.001,
-        "weight_gen_loss": [5e-6, 2e-6, 2e-5],
+        "weight_gen_loss": [
+          5e-06,
+          2e-06,
+          2e-05
+        ],
         "weight_sim_loss": 5,
         "num_temporal_head": 25
       },
@@ -1430,7 +1851,10 @@
         "relu_dropout": 0.0,
         "embed_dropout": 0.1,
         "res_dropout": 0.2,
-        "dst_feature_dim_nheads": [30, 6],
+        "dst_feature_dim_nheads": [
+          30,
+          6
+        ],
         "nlevels": 2,
         "trans_hid_t": 40,
         "trans_hid_t_drop": 0.0,
@@ -1451,12 +1875,16 @@
         "cls_dropout": 0.1,
         "grad_clip": 0.8,
         "batch_size": 16,
-        "learning_rate_bert": 1e-5,
+        "learning_rate_bert": 1e-05,
         "learning_rate_other": 0.002,
         "patience": 10,
         "weight_decay_bert": 0.0001,
         "weight_decay_other": 0.001,
-        "weight_gen_loss": [1, 0.01, 0.0001],
+        "weight_gen_loss": [
+          1,
+          0.01,
+          0.0001
+        ],
         "weight_sim_loss": 5,
         "num_temporal_head": 25
       }
@@ -1478,177 +1906,177 @@
         "batch_size": 64,
         "transformers": "bert",
         "pretrained": "bert-base-uncased",
-        "a_lstm_hidden_size":16,
-        "a_lstm_layers":1,
-        "a_lstm_dropout":0.0,
-        "v_lstm_hidden_size":64,
-        "v_lstm_layers":1,
-        "v_lstm_dropout":0.0,
-        "conv1d_kernel_size_l":1,
-        "conv1d_kernel_size_a":1,
-        "conv1d_kernel_size_v":3,
-        "dst_feature_dims":50,
-        "nheads":5,
-        "attn_dropout":0.1,
-        "attn_dropout_a":0.0,
-        "attn_dropout_v":0.1,
-        "relu_dropout":0.0,
-        "embed_dropout":0.0,
-        "res_dropout":0.1,
-        "post_fusion_dropout":0.0,
-        "post_fusion_dim":64,
-        "post_text_dropout":0.0,
-        "post_text_dim":32,
-        "post_audio_dropout":0.0,
-        "post_audio_dim":32,
-        "post_video_dropout":0.0,
-        "post_video_dim":16,
-        "train_samples":1284,
-        "excludeZero":true,
-        "update_epochs":4,
-        "H":3,
-        "decay":false,
-        "weight_decay_bert":0.001,
-        "learning_rate_bert":3e-5,
-        "weight_decay_audio":0.01,
-        "weight_decay_video":0.0,
-        "weight_decay_other":0.01,
-        "learning_rate_audio":0.0005,
-        "learning_rate_video":0.0003,
-        "learning_rate_other":0.0003
+        "a_lstm_hidden_size": 16,
+        "a_lstm_layers": 1,
+        "a_lstm_dropout": 0.0,
+        "v_lstm_hidden_size": 64,
+        "v_lstm_layers": 1,
+        "v_lstm_dropout": 0.0,
+        "conv1d_kernel_size_l": 1,
+        "conv1d_kernel_size_a": 1,
+        "conv1d_kernel_size_v": 3,
+        "dst_feature_dims": 50,
+        "nheads": 5,
+        "attn_dropout": 0.1,
+        "attn_dropout_a": 0.0,
+        "attn_dropout_v": 0.1,
+        "relu_dropout": 0.0,
+        "embed_dropout": 0.0,
+        "res_dropout": 0.1,
+        "post_fusion_dropout": 0.0,
+        "post_fusion_dim": 64,
+        "post_text_dropout": 0.0,
+        "post_text_dim": 32,
+        "post_audio_dropout": 0.0,
+        "post_audio_dim": 32,
+        "post_video_dropout": 0.0,
+        "post_video_dim": 16,
+        "train_samples": 1284,
+        "excludeZero": true,
+        "update_epochs": 4,
+        "H": 3,
+        "decay": false,
+        "weight_decay_bert": 0.001,
+        "learning_rate_bert": 3e-05,
+        "weight_decay_audio": 0.01,
+        "weight_decay_video": 0.0,
+        "weight_decay_other": 0.01,
+        "learning_rate_audio": 0.0005,
+        "learning_rate_video": 0.0003,
+        "learning_rate_other": 0.0003
       },
       "mosei": {
         "batch_size": 32,
         "transformers": "bert",
         "pretrained": "bert-base-uncased",
-        "a_lstm_hidden_size":32,
-        "a_lstm_layers":1,
-        "a_lstm_dropout":0.0,
-        "v_lstm_hidden_size":32,
-        "v_lstm_layers":1,
-        "v_lstm_dropout":0.0,
-        "conv1d_kernel_size_l":1,
-        "conv1d_kernel_size_a":1,
-        "conv1d_kernel_size_v":1,
-        "dst_feature_dims":50,
-        "nheads":5,
-        "attn_dropout":0.1,
-        "attn_dropout_a":0.0,
-        "attn_dropout_v":0.1,
-        "relu_dropout":0.1,
-        "embed_dropout":0.1,
-        "res_dropout":0.0,
-        "post_fusion_dropout":0.0,
-        "post_fusion_dim":64,
-        "post_text_dropout":0.1,
-        "post_text_dim":64,
-        "post_audio_dropout":0.0,
-        "post_audio_dim":32,
-        "post_video_dropout":0.1,
-        "post_video_dim":16,
-        "train_samples":16326,
-        "excludeZero":true,
-        "update_epochs":4,
-        "H":3,
-        "decay":false,
-        "weight_decay_bert":0.001,
-        "learning_rate_bert":3e-5,
-        "weight_decay_audio":0.0,
-        "weight_decay_video":0.001,
-        "weight_decay_other":0.01,
-        "learning_rate_audio":0.001,
-        "learning_rate_video":0.005,
-        "learning_rate_other":0.0001
+        "a_lstm_hidden_size": 32,
+        "a_lstm_layers": 1,
+        "a_lstm_dropout": 0.0,
+        "v_lstm_hidden_size": 32,
+        "v_lstm_layers": 1,
+        "v_lstm_dropout": 0.0,
+        "conv1d_kernel_size_l": 1,
+        "conv1d_kernel_size_a": 1,
+        "conv1d_kernel_size_v": 1,
+        "dst_feature_dims": 50,
+        "nheads": 5,
+        "attn_dropout": 0.1,
+        "attn_dropout_a": 0.0,
+        "attn_dropout_v": 0.1,
+        "relu_dropout": 0.1,
+        "embed_dropout": 0.1,
+        "res_dropout": 0.0,
+        "post_fusion_dropout": 0.0,
+        "post_fusion_dim": 64,
+        "post_text_dropout": 0.1,
+        "post_text_dim": 64,
+        "post_audio_dropout": 0.0,
+        "post_audio_dim": 32,
+        "post_video_dropout": 0.1,
+        "post_video_dim": 16,
+        "train_samples": 16326,
+        "excludeZero": true,
+        "update_epochs": 4,
+        "H": 3,
+        "decay": false,
+        "weight_decay_bert": 0.001,
+        "learning_rate_bert": 3e-05,
+        "weight_decay_audio": 0.0,
+        "weight_decay_video": 0.001,
+        "weight_decay_other": 0.01,
+        "learning_rate_audio": 0.001,
+        "learning_rate_video": 0.005,
+        "learning_rate_other": 0.0001
       },
       "sims": {
         "batch_size": 64,
         "transformers": "bert",
         "pretrained": "bert-base-chinese",
-        "a_lstm_hidden_size":16,
-        "a_lstm_layers":1,
-        "a_lstm_dropout":0.0,
-        "v_lstm_hidden_size":64,
-        "v_lstm_layers":1,
-        "v_lstm_dropout":0.0,
-        "conv1d_kernel_size_l":3,
-        "conv1d_kernel_size_a":5,
-        "conv1d_kernel_size_v":1,
-        "dst_feature_dims":50,
-        "nheads":5,
-        "attn_dropout":0.0,
-        "attn_dropout_a":0.1,
-        "attn_dropout_v":0.0,
-        "relu_dropout":0.1,
-        "embed_dropout":0.0,
-        "res_dropout":0.0,
-        "post_fusion_dropout":0.1,
-        "post_fusion_dim":64,
-        "post_text_dropout":0.0,
-        "post_text_dim":64,
-        "post_audio_dropout":0.0,
-        "post_audio_dim":16,
-        "post_video_dropout":0.0,
-        "post_video_dim":32,
-        "train_samples":1368,
-        "excludeZero":true,
-        "update_epochs":4,
-        "H":3,
-        "decay":false,
-        "weight_decay_bert":0.001,
-        "learning_rate_bert":3e-5,
-        "weight_decay_audio":0.0,
-        "weight_decay_video":0.01,
-        "weight_decay_other":0.001,
-        "learning_rate_audio":0.003,
-        "learning_rate_video":0.0005,
-        "learning_rate_other":0.003
+        "a_lstm_hidden_size": 16,
+        "a_lstm_layers": 1,
+        "a_lstm_dropout": 0.0,
+        "v_lstm_hidden_size": 64,
+        "v_lstm_layers": 1,
+        "v_lstm_dropout": 0.0,
+        "conv1d_kernel_size_l": 3,
+        "conv1d_kernel_size_a": 5,
+        "conv1d_kernel_size_v": 1,
+        "dst_feature_dims": 50,
+        "nheads": 5,
+        "attn_dropout": 0.0,
+        "attn_dropout_a": 0.1,
+        "attn_dropout_v": 0.0,
+        "relu_dropout": 0.1,
+        "embed_dropout": 0.0,
+        "res_dropout": 0.0,
+        "post_fusion_dropout": 0.1,
+        "post_fusion_dim": 64,
+        "post_text_dropout": 0.0,
+        "post_text_dim": 64,
+        "post_audio_dropout": 0.0,
+        "post_audio_dim": 16,
+        "post_video_dropout": 0.0,
+        "post_video_dim": 32,
+        "train_samples": 1368,
+        "excludeZero": true,
+        "update_epochs": 4,
+        "H": 3,
+        "decay": false,
+        "weight_decay_bert": 0.001,
+        "learning_rate_bert": 3e-05,
+        "weight_decay_audio": 0.0,
+        "weight_decay_video": 0.01,
+        "weight_decay_other": 0.001,
+        "learning_rate_audio": 0.003,
+        "learning_rate_video": 0.0005,
+        "learning_rate_other": 0.003
       },
       "simsv2": {
         "batch_size": 64,
         "transformers": "bert",
         "pretrained": "bert-base-chinese",
-        "a_lstm_hidden_size":16,
-        "a_lstm_layers":1,
-        "a_lstm_dropout":0.0,
-        "v_lstm_hidden_size":32,
-        "v_lstm_layers":1,
-        "v_lstm_dropout":0.0,
-        "conv1d_kernel_size_l":5,
-        "conv1d_kernel_size_a":3,
-        "conv1d_kernel_size_v":1,
-        "dst_feature_dims":50,
-        "nheads":5,
-        "attn_dropout":0.1,
-        "attn_dropout_a":0.0,
-        "attn_dropout_v":0.1,
-        "relu_dropout":0.0,
-        "embed_dropout":0.0,
-        "res_dropout":0.1,
-        "post_fusion_dropout":0.1,
-        "post_fusion_dim":128,
-        "post_text_dropout":0.1,
-        "post_text_dim":64,
-        "post_audio_dropout":0.0,
-        "post_audio_dim":16,
-        "post_video_dropout":0.0,
-        "post_video_dim":32,
-        "train_samples":2722,
-        "excludeZero":true,
-        "update_epochs":4,
-        "H":3,
-        "decay":false,
-        "weight_decay_bert":0.001,
-        "learning_rate_bert":5e-6,
-        "weight_decay_audio":0.001,
-        "weight_decay_video":0.001,
-        "weight_decay_other":0.001,
-        "learning_rate_audio":0.0005,
-        "learning_rate_video":0.005,
-        "learning_rate_other":0.0003
+        "a_lstm_hidden_size": 16,
+        "a_lstm_layers": 1,
+        "a_lstm_dropout": 0.0,
+        "v_lstm_hidden_size": 32,
+        "v_lstm_layers": 1,
+        "v_lstm_dropout": 0.0,
+        "conv1d_kernel_size_l": 5,
+        "conv1d_kernel_size_a": 3,
+        "conv1d_kernel_size_v": 1,
+        "dst_feature_dims": 50,
+        "nheads": 5,
+        "attn_dropout": 0.1,
+        "attn_dropout_a": 0.0,
+        "attn_dropout_v": 0.1,
+        "relu_dropout": 0.0,
+        "embed_dropout": 0.0,
+        "res_dropout": 0.1,
+        "post_fusion_dropout": 0.1,
+        "post_fusion_dim": 128,
+        "post_text_dropout": 0.1,
+        "post_text_dim": 64,
+        "post_audio_dropout": 0.0,
+        "post_audio_dim": 16,
+        "post_video_dropout": 0.0,
+        "post_video_dim": 32,
+        "train_samples": 2722,
+        "excludeZero": true,
+        "update_epochs": 4,
+        "H": 3,
+        "decay": false,
+        "weight_decay_bert": 0.001,
+        "learning_rate_bert": 5e-06,
+        "weight_decay_audio": 0.001,
+        "weight_decay_video": 0.001,
+        "weight_decay_other": 0.001,
+        "learning_rate_audio": 0.0005,
+        "learning_rate_video": 0.005,
+        "learning_rate_other": 0.0003
       }
     }
   },
-  "cenet":{
+  "cenet": {
     "commonParams": {
       "need_data_aligned": false,
       "need_model_aligned": false,
@@ -1660,39 +2088,39 @@
     "datasetParams": {
       "mosi": {
         "pretrained": "bert-base-uncased",
-        "learning_rate":1e-5,
-        "weight_decay":0.0001,
-        "max_grad_norm":2,
-        "adam_epsilon":3e-8,
-        "batch_size":64
+        "learning_rate": 1e-05,
+        "weight_decay": 0.0001,
+        "max_grad_norm": 2,
+        "adam_epsilon": 3e-08,
+        "batch_size": 64
       },
-      "mosei":{
+      "mosei": {
         "pretrained": "bert-base-uncased",
-        "learning_rate":1e-5,
-        "weight_decay":0.0001,
-        "max_grad_norm":2,
-        "adam_epsilon":1e-8,
-        "batch_size":64
+        "learning_rate": 1e-05,
+        "weight_decay": 0.0001,
+        "max_grad_norm": 2,
+        "adam_epsilon": 1e-08,
+        "batch_size": 64
       },
-      "sims":{
+      "sims": {
         "pretrained": "bert-base-chinese",
-        "learning_rate":2e-6,
-        "weight_decay":0.0,
-        "max_grad_norm":2,
-        "adam_epsilon":2e-8,
-        "batch_size":32
+        "learning_rate": 2e-06,
+        "weight_decay": 0.0,
+        "max_grad_norm": 2,
+        "adam_epsilon": 2e-08,
+        "batch_size": 32
       },
-      "simsv2":{
+      "simsv2": {
         "pretrained": "bert-base-chinese",
-        "learning_rate":3e-5,
-        "weight_decay":0.0,
-        "max_grad_norm":2,
-        "adam_epsilon":3e-8,
-        "batch_size":64
+        "learning_rate": 3e-05,
+        "weight_decay": 0.0,
+        "max_grad_norm": 2,
+        "adam_epsilon": 3e-08,
+        "batch_size": 64
       }
     }
   },
-  "almt":{
+  "almt": {
     "commonParams": {
       "need_data_aligned": true,
       "need_model_aligned": false,
@@ -1706,17 +2134,33 @@
       "mosi": {
         "transformers": "bert",
         "pretrained": "bert-base-uncased",
-        "learning_rate":0.0001,
-        "weight_decay":0.0001,
-        "max_grad_norm":2,
-        "batch_size":64,
-        "feature_dims": [768, 5, 20],
-        "feature_length": [50, 50, 50],
+        "learning_rate": 0.0001,
+        "weight_decay": 0.0001,
+        "max_grad_norm": 2,
+        "batch_size": 64,
+        "feature_dims": [
+          768,
+          5,
+          20
+        ],
+        "feature_length": [
+          50,
+          50,
+          50
+        ],
         "dst_feature_dims": 128,
         "dst_feature_hidden_dims": 128,
         "dst_embedding_length": 8,
-        "embedding_depth": [1, 1, 1],
-        "embedding_heads": [8, 8, 8],
+        "embedding_depth": [
+          1,
+          1,
+          1
+        ],
+        "embedding_heads": [
+          8,
+          8,
+          8
+        ],
         "l_encoder_heads": 8,
         "AHL_depth": 3,
         "h_hyper_layer_heads": 8,
@@ -1724,20 +2168,36 @@
         "fusion_heads": 8,
         "fusion_layer_depth": 2
       },
-      "mosei":{
+      "mosei": {
         "transformers": "bert",
         "pretrained": "bert-base-uncased",
-        "learning_rate":0.0001,
-        "weight_decay":0.0001,
-        "max_grad_norm":2,
-        "batch_size":64,
-        "feature_dims": [768, 74, 35],
-        "feature_length": [50, 50, 50],
+        "learning_rate": 0.0001,
+        "weight_decay": 0.0001,
+        "max_grad_norm": 2,
+        "batch_size": 64,
+        "feature_dims": [
+          768,
+          74,
+          35
+        ],
+        "feature_length": [
+          50,
+          50,
+          50
+        ],
         "dst_feature_dims": 128,
         "dst_feature_hidden_dims": 128,
         "dst_embedding_length": 8,
-        "embedding_depth": [1, 1, 1],
-        "embedding_heads": [8, 8, 8],
+        "embedding_depth": [
+          1,
+          1,
+          1
+        ],
+        "embedding_heads": [
+          8,
+          8,
+          8
+        ],
         "l_encoder_heads": 8,
         "AHL_depth": 3,
         "h_hyper_layer_heads": 8,
@@ -1745,20 +2205,36 @@
         "fusion_heads": 8,
         "fusion_layer_depth": 4
       },
-      "sims":{
+      "sims": {
         "transformers": "bert",
         "pretrained": "bert-base-chinese",
-        "learning_rate":0.0001,
-        "weight_decay":0.0001,
-        "max_grad_norm":2,
-        "batch_size":64,
-        "feature_dims": [768, 33, 709],
-        "feature_length": [39, 400, 55],
+        "learning_rate": 0.0001,
+        "weight_decay": 0.0001,
+        "max_grad_norm": 2,
+        "batch_size": 64,
+        "feature_dims": [
+          768,
+          33,
+          709
+        ],
+        "feature_length": [
+          39,
+          400,
+          55
+        ],
         "dst_feature_dims": 128,
         "dst_feature_hidden_dims": 128,
         "dst_embedding_length": 8,
-        "embedding_depth": [1, 1, 1],
-        "embedding_heads": [8, 8, 8],
+        "embedding_depth": [
+          1,
+          1,
+          1
+        ],
+        "embedding_heads": [
+          8,
+          8,
+          8
+        ],
         "l_encoder_heads": 8,
         "AHL_depth": 3,
         "h_hyper_layer_heads": 8,
@@ -1768,7 +2244,7 @@
       }
     }
   },
-  "almt_mil":{
+  "almt_mil": {
     "commonParams": {
       "need_data_aligned": true,
       "need_model_aligned": false,
@@ -1782,17 +2258,33 @@
       "mosi": {
         "transformers": "bert",
         "pretrained": "bert-base-uncased",
-        "learning_rate":0.0001,
-        "weight_decay":0.0001,
-        "max_grad_norm":2,
-        "batch_size":64,
-        "feature_dims": [768, 5, 20],
-        "feature_length": [50, 50, 50],
+        "learning_rate": 0.0001,
+        "weight_decay": 0.0001,
+        "max_grad_norm": 2,
+        "batch_size": 64,
+        "feature_dims": [
+          768,
+          5,
+          20
+        ],
+        "feature_length": [
+          50,
+          50,
+          50
+        ],
         "dst_feature_dims": 128,
         "dst_feature_hidden_dims": 128,
         "dst_embedding_length": 8,
-        "embedding_depth": [1, 1, 1],
-        "embedding_heads": [8, 8, 8],
+        "embedding_depth": [
+          1,
+          1,
+          1
+        ],
+        "embedding_heads": [
+          8,
+          8,
+          8
+        ],
         "l_encoder_heads": 8,
         "AHL_depth": 3,
         "h_hyper_layer_heads": 8,
@@ -1802,7 +2294,7 @@
       }
     }
   },
-  "almt_r1":{
+  "almt_r1": {
     "commonParams": {
       "need_data_aligned": true,
       "need_model_aligned": false,
@@ -1821,13 +2313,29 @@
         "weight_decay": 0.0001,
         "max_grad_norm": 2,
         "batch_size": 64,
-        "feature_dims": [768, 5, 20],
-        "feature_length": [50, 50, 50],
+        "feature_dims": [
+          768,
+          5,
+          20
+        ],
+        "feature_length": [
+          50,
+          50,
+          50
+        ],
         "dst_feature_dims": 128,
         "dst_feature_hidden_dims": 128,
         "dst_embedding_length": 8,
-        "embedding_depth": [1, 1, 1],
-        "embedding_heads": [8, 8, 8],
+        "embedding_depth": [
+          1,
+          1,
+          1
+        ],
+        "embedding_heads": [
+          8,
+          8,
+          8
+        ],
         "l_encoder_heads": 8,
         "AHL_depth": 3,
         "h_hyper_layer_heads": 8,
@@ -1835,20 +2343,36 @@
         "fusion_heads": 8,
         "fusion_layer_depth": 2
       },
-      "mosei":{
+      "mosei": {
         "transformers": "bert",
         "pretrained": "bert-base-uncased",
         "learning_rate": 0.0001,
         "weight_decay": 0.0001,
         "max_grad_norm": 2,
         "batch_size": 64,
-        "feature_dims": [768, 74, 35],
-        "feature_length": [50, 50, 50],
+        "feature_dims": [
+          768,
+          74,
+          35
+        ],
+        "feature_length": [
+          50,
+          50,
+          50
+        ],
         "dst_feature_dims": 128,
         "dst_feature_hidden_dims": 128,
         "dst_embedding_length": 8,
-        "embedding_depth": [1, 1, 1],
-        "embedding_heads": [8, 8, 8],
+        "embedding_depth": [
+          1,
+          1,
+          1
+        ],
+        "embedding_heads": [
+          8,
+          8,
+          8
+        ],
         "l_encoder_heads": 8,
         "AHL_depth": 3,
         "h_hyper_layer_heads": 8,
@@ -1858,7 +2382,7 @@
       }
     }
   },
-  "almt_cider":{
+  "almt_cider": {
     "commonParams": {
       "need_data_aligned": true,
       "need_model_aligned": false,
@@ -1879,13 +2403,29 @@
         "weight_decay": 0.01,
         "max_grad_norm": 1.0,
         "batch_size": 32,
-        "feature_dims": [768, 5, 20],
-        "feature_length": [50, 50, 50],
+        "feature_dims": [
+          768,
+          5,
+          20
+        ],
+        "feature_length": [
+          50,
+          50,
+          50
+        ],
         "dst_feature_dims": 128,
         "dst_feature_hidden_dims": 256,
         "dst_embedding_length": 8,
-        "embedding_depth": [2, 2, 2],
-        "embedding_heads": [8, 8, 8],
+        "embedding_depth": [
+          2,
+          2,
+          2
+        ],
+        "embedding_heads": [
+          8,
+          8,
+          8
+        ],
         "l_encoder_heads": 8,
         "AHL_depth": 3,
         "h_hyper_layer_heads": 8,
@@ -1893,20 +2433,36 @@
         "fusion_heads": 8,
         "fusion_layer_depth": 2
       },
-      "mosei":{
+      "mosei": {
         "transformers": "bert",
         "pretrained": "bert-base-uncased",
         "learning_rate": 0.001,
         "weight_decay": 0.01,
         "max_grad_norm": 1.0,
         "batch_size": 32,
-        "feature_dims": [768, 74, 35],
-        "feature_length": [50, 50, 50],
+        "feature_dims": [
+          768,
+          74,
+          35
+        ],
+        "feature_length": [
+          50,
+          50,
+          50
+        ],
         "dst_feature_dims": 128,
         "dst_feature_hidden_dims": 256,
         "dst_embedding_length": 8,
-        "embedding_depth": [2, 2, 2],
-        "embedding_heads": [8, 8, 8],
+        "embedding_depth": [
+          2,
+          2,
+          2
+        ],
+        "embedding_heads": [
+          8,
+          8,
+          8
+        ],
         "l_encoder_heads": 8,
         "AHL_depth": 3,
         "h_hyper_layer_heads": 8,
@@ -1914,26 +2470,63 @@
         "fusion_heads": 8,
         "fusion_layer_depth": 2
       },
-      "sims":{
+      "sims": {
         "transformers": "bert",
         "pretrained": "bert-base-chinese",
         "learning_rate": 0.001,
         "weight_decay": 0.01,
         "max_grad_norm": 1.0,
         "batch_size": 32,
-        "feature_dims": [768, 33, 709],
-        "feature_length": [39, 400, 55],
+        "feature_dims": [
+          768,
+          33,
+          709
+        ],
+        "feature_length": [
+          39,
+          400,
+          55
+        ],
         "dst_feature_dims": 128,
         "dst_feature_hidden_dims": 256,
         "dst_embedding_length": 8,
-        "embedding_depth": [2, 2, 2],
-        "embedding_heads": [8, 8, 8],
+        "embedding_depth": [
+          2,
+          2,
+          2
+        ],
+        "embedding_heads": [
+          8,
+          8,
+          8
+        ],
         "l_encoder_heads": 8,
         "AHL_depth": 3,
         "h_hyper_layer_heads": 8,
         "fusion_hidden_d": 256,
         "fusion_heads": 8,
         "fusion_layer_depth": 2
+      }
+    }
+  },
+  "cider_lite": {
+    "commonParams": {
+      "need_data_aligned": false,
+      "need_model_aligned": false,
+      "need_normalized": true,
+      "early_stop": 8,
+      "max_epochs": 50
+    },
+    "datasetParams": {
+      "copa_1231": {
+        "embed_dim": 128,
+        "num_heads": 4,
+        "layers": 2,
+        "dropout": 0.1,
+        "rnn_hidden": 128,
+        "extra_hidden": 64,
+        "batch_size": 32,
+        "learning_rate": 0.001
       }
     }
   }

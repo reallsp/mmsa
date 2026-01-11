@@ -48,7 +48,11 @@ class TFN():
                     # clear gradient
                     optimizer.zero_grad()
                     # forward
-                    outputs = model(text, audio, vision)['M']
+                    extras = {}
+                    for k in ['ir_feature', 'bio', 'eye', 'eeg', 'eda', 'audio_waveform']:
+                        if k in batch_data:
+                            extras[k] = batch_data[k].to(self.args.device)
+                    outputs = model(text, audio, vision, extras=extras)['M']
                     # compute loss
                     loss = self.criterion(outputs, labels)
                     # backward
@@ -127,7 +131,11 @@ class TFN():
                         labels = labels.view(-1).long()
                     else:
                         labels = labels.view(-1, 1)
-                    outputs = model(text, audio, vision)
+                    extras = {}
+                    for k in ['ir_feature', 'bio', 'eye', 'eeg', 'eda', 'audio_waveform']:
+                        if k in batch_data:
+                            extras[k] = batch_data[k].to(self.args.device)
+                    outputs = model(text, audio, vision, extras=extras)
 
                     # 收集样本索引（用于COPA评估）
                     if 'index' in batch_data:

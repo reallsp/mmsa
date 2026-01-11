@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""使用新数据集训练模型（GPU模式）"""
+"""5-Fold 交叉验证训练（custom 数据集，TFN）"""
 import sys
-import os
 sys.path.insert(0, 'src')
 
 import torch
-
+from pathlib import Path
 from MMSA.run import MMSA_run
 
+project_dir = Path(__file__).parent.absolute()
+
 print('=' * 70)
-print('开始训练模型（GPU模式）')
+print('TFN | custom | 5-Fold 交叉验证')
 print('=' * 70)
 
 # 检查GPU可用性
@@ -23,31 +24,50 @@ if torch.cuda.is_available():
     print(f'使用GPU: {gpu_ids}')
 else:
     print('未检测到GPU，将使用CPU')
-    gpu_ids = []  # 空列表使用CPU
+    gpu_ids = []
 
-print('模型: TFN')
-print('数据集: custom')
-print('随机种子: 1111')
+model_name = 'tfn'
+dataset_name = 'custom'
+seeds = [1111, 1112, 1113, 1114, 1115]
+
+print(f'模型: {model_name}')
+print(f'数据集: {dataset_name}')
+print(f'折数: 5')
+print(f'随机种子: {seeds}')
 print('=' * 70)
 
-try:
-    results = MMSA_run(
-        model_name='tfn',
-        dataset_name='custom',
-        seeds=[1111],
-        gpu_ids=gpu_ids,  # 使用GPU
-        num_workers=4 if gpu_ids else 2,  # GPU模式可以使用更多workers
-        verbose_level=1
-    )
-    print('\n' + '=' * 70)
-    print('训练完成！')
-    print('=' * 70)
-    print('结果:', results)
-except Exception as e:
-    print(f'\n训练出错: {e}')
-    if 'CUDA' in str(e) or 'kernel' in str(e).lower():
-        print('\n检测到CUDA错误，可能是GPU兼容性问题。')
-        print('可以尝试使用CPU模式：gpu_ids=[]')
-    import traceback
-    traceback.print_exc()
+all_results = []
+
+for idx, seed in enumerate(seeds, 1):
+    print(f'\n>>> 开始第 {idx}/5 折 (seed={seed})')
+    fold_save_dir = project_dir / "saved_models" / f"fold{idx}"
+    fold_res_dir = project_dir / "results" / f"fold{idx}"
+    fold_log_dir = project_dir / "logs" / f"fold{idx}"
+
+    try:
+        results = MMSA_run(
+            model_name=model_name,
+            dataset_name=dataset_name,
+            seeds=[seed],
+            gpu_ids=gpu_ids,
+            num_workers=4 if gpu_ids else 2,
+            verbose_level=1,
+            model_save_dir=str(fold_save_dir),
+            res_save_dir=str(fold_res_dir),
+            log_dir=str(fold_log_dir)
+        )
+        all_results.append(results)
+        print(f'>>> 第 {idx} 折完成，结果: {results}')
+    except Exception as e:
+        print(f'\n训练出错 (Fold {idx}): {e}')
+        if 'CUDA' in str(e) or 'kernel' in str(e).lower():
+            print('\n检测到CUDA错误，可能是GPU兼容性问题。')
+            print('可以尝试使用CPU模式：gpu_ids=[]')
+        import traceback
+        traceback.print_exc()
+
+print('\n' + '=' * 70)
+print('5-Fold 训练完成！')
+print('=' * 70)
+print('各折结果:', all_results)
 

@@ -51,8 +51,7 @@ class MMDataset(Dataset):
             self.test_set = args.dataset
         DATA_MAP = {
             'mosi': self.__init_mosi,
-            'mosei': self.__init_mosei,
-            'copa_pi': self.__init_copa_pi
+            'mosei': self.__init_mosei
         }
         DATA_MAP[args.dataset]()
 

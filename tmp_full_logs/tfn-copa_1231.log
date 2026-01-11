@@ -1,0 +1,7 @@
+2026-01-04 20:28:00,059 - MMSA [INFO] - ======================================== Program Start ========================================
+2026-01-04 20:28:00,205 - MMSA [INFO] - Found gpu 0, used memory 398721024.
+2026-01-04 20:28:00,218 - MMSA [INFO] - Running with args:
+2026-01-04 20:28:00,219 - MMSA [INFO] - {'model_name': 'tfn', 'dataset_name': 'copa_1231', 'featurePath': '/root/autodl-tmp/data/copa_{mode}_1231_converted.pkl', 'seq_lens': [50, 512, 197], 'feature_dims': [768, 13, 768], 'train_samples': 12200, 'num_classes': 2, 'language': 'cn', 'KeyEval': 'Loss', 'missing_rate': [0.2, 0.2, 0.2], 'missing_seed': [1111, 1111, 1111], 'need_data_aligned': False, 'need_model_aligned': False, 'need_normalized': True, 'early_stop': 1, 'hidden_dims': [128, 32, 128], 'text_out': 32, 'post_fusion_dim': 64, 'dropouts': [0.3, 0.3, 0.3, 0.5], 'batch_size': 8, 'learning_rate': 0.001, 'model_save_path': PosixPath('tmp_full_saved/tfn-copa_1231.pth'), 'device': device(type='cuda', index=0), 'train_mode': 'regression', 'custom_feature': None, 'feature_T': None, 'feature_A': None, 'feature_V': None, 'max_epochs': 1}
+2026-01-04 20:28:00,219 - MMSA [INFO] - Seeds: [1111]
+2026-01-04 20:28:00,220 - MMSA [INFO] - ------------------------------ Running with seed 1111 [1/1] ------------------------------
+2026-01-04 20:28:00,220 - MMSA [INFO] - Loading train data from /root/autodl-tmp/data/copa_train_1231_converted.pkl

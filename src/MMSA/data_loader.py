@@ -218,6 +218,10 @@ class MMDataset(Dataset):
         self.audio[self.audio == -np.inf] = 0
         self.vision[self.vision == -np.inf] = 0
         
+        # 如果需要归一化（与 aligned 兼容，做时间维均值，输出形状 (N,1,dim)）
+        if self.args.get('need_normalized'):
+            self.__normalize()
+        
         # 如果需要归一化
         if self.args.get('need_normalized'):
             self.__normalize()

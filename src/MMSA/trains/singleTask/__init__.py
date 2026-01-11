@@ -15,3 +15,4 @@ from .ALMT import ALMT
 # from .ALMT_MIL import ALMT_MIL  # 文件不存在，暂时注释
 # from .ALMT_R1 import ALMT_R1  # 文件不存在，暂时注释
 from .ALMT_CIDer import ALMT_CIDer
+from .CIDerLite import CIDerLite

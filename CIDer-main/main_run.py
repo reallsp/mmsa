@@ -80,18 +80,14 @@ output_dim_dict = {
     'mosi_binary': 3,
     'mosei_binary': 3,
     'mosi_seven': 7,
-    'mosei_seven': 7,
-    'copa_pi_binary': 2,  # 二分类
-    'copa_pi_seven': 7
+    'mosei_seven': 7
 }
 
 criterion_dict = {
     'mosi_binary': 'NLLLoss',  # classification
     'mosei_binary': 'NLLLoss',
     'mosi_seven': 'NLLLoss',  # classification
-    'mosei_seven': 'NLLLoss',
-    'copa_pi_binary': 'NLLLoss',  # 二分类
-    'copa_pi_seven': 'NLLLoss'
+    'mosei_seven': 'NLLLoss'
 }
 
 torch.set_default_dtype(torch.float32)
@@ -175,17 +171,6 @@ if dataset == 'mosi' or dataset == 'mosei':
         else:
             hyp_params.orig_d_l, hyp_params.orig_d_a, hyp_params.orig_d_v = 768, 25, 171
             hyp_params.l_len, hyp_params.a_len, hyp_params.v_len = 75, 75, 75
-elif dataset == 'copa_pi':
-    # COPA-PI数据集配置
-    # 文本：768维BERT特征（转换为伪token格式，seq_len=50）
-    # 音频：MFCC特征（13维）
-    # 视觉：768维特征（197帧）
-    hyp_params.orig_d_l, hyp_params.orig_d_a, hyp_params.orig_d_v = 768, 13, 768
-    if args.aligned:
-        hyp_params.l_len, hyp_params.a_len, hyp_params.v_len = 50, 50, 197
-    else:
-        # 如果unaligned，需要根据实际数据确定
-        hyp_params.l_len, hyp_params.a_len, hyp_params.v_len = 50, 200, 197  # 音频长度需要根据实际数据调整
 else:
     raise ValueError('Unknown dataset')
 

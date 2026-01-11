@@ -30,6 +30,7 @@ class LMF():
             }
         min_or_max = 'min' if self.args.KeyEval in ['Loss'] else 'max'
         best_valid = 1e8 if min_or_max == 'min' else 0
+        best_test = 1e8 if min_or_max == 'min' else 0
         # loop util earlystop
         while True: 
             epochs += 1
@@ -69,32 +70,42 @@ class LMF():
             logger.info(
                 f"TRAIN-({self.args.model_name}) [{epochs - best_epoch}/{epochs}/{self.args.cur_seed}] >> loss: {round(train_loss, 4)} {dict_to_str(train_results)}"
             )
-            # validation
-            val_results = self.do_test(model, dataloader['valid'], mode="VAL")
-            cur_valid = val_results[self.args.KeyEval]
-            # save best model
-            isBetter = cur_valid <= (best_valid - 1e-6) if min_or_max == 'min' else cur_valid >= (best_valid + 1e-6)
-            # save best model
-            if isBetter:
-                best_valid, best_epoch = cur_valid, epochs
-                # save model
-                torch.save(model.cpu().state_dict(), self.args.model_save_path)
-                model.to(self.args.device)
-            # epoch results
-            if return_epoch_results:
-                train_results["Loss"] = train_loss
-                epoch_results['train'].append(train_results)
-                epoch_results['valid'].append(val_results)
+            # validation / (KFold) fold-test selection
+            if getattr(self.args, 'skip_validation', False):
                 test_results = self.do_test(model, dataloader['test'], mode="TEST")
-                epoch_results['test'].append(test_results)
+                cur_test = test_results[self.args.KeyEval]
+                isBetter = cur_test <= (best_test - 1e-6) if min_or_max == 'min' else cur_test >= (best_test + 1e-6)
+                if isBetter:
+                    best_test, best_epoch = cur_test, epochs
+                    torch.save(model.cpu().state_dict(), self.args.model_save_path)
+                    model.to(self.args.device)
+                if return_epoch_results:
+                    train_results["Loss"] = train_loss
+                    epoch_results['train'].append(train_results)
+                    epoch_results['test'].append(test_results)
+            else:
+                val_results = self.do_test(model, dataloader['valid'], mode="VAL")
+                cur_valid = val_results[self.args.KeyEval]
+                isBetter = cur_valid <= (best_valid - 1e-6) if min_or_max == 'min' else cur_valid >= (best_valid + 1e-6)
+                if isBetter:
+                    best_valid, best_epoch = cur_valid, epochs
+                    torch.save(model.cpu().state_dict(), self.args.model_save_path)
+                    model.to(self.args.device)
+                if return_epoch_results:
+                    train_results["Loss"] = train_loss
+                    epoch_results['train'].append(train_results)
+                    epoch_results['valid'].append(val_results)
+                    test_results = self.do_test(model, dataloader['test'], mode="TEST")
+                    epoch_results['test'].append(test_results)
             # early stop
-            if epochs - best_epoch >= self.args.early_stop:
+            if epochs - best_epoch >= self.args.early_stop or epochs >= getattr(self.args, 'max_epochs', 100):
                 return epoch_results if return_epoch_results else None
 
     def do_test(self, model, dataloader, mode="VAL", return_sample_results=False):
         model.eval()
         y_pred, y_true = [], []
         eval_loss = 0.0
+        sample_indices = []  # for COPA paradigm accuracy
         if return_sample_results:
             ids, sample_results = [], []
             all_labels = []
@@ -117,6 +128,15 @@ class LMF():
                         labels = labels.view(-1, 1)
                     outputs = model(text, audio, vision)
 
+                    # collect sample indices for COPA evaluation
+                    if 'index' in batch_data:
+                        batch_indices = batch_data['index'].cpu().numpy()
+                        sample_indices.extend(batch_indices)
+                    else:
+                        current_start = len(sample_indices)
+                        batch_size = labels.shape[0]
+                        sample_indices.extend(range(current_start, current_start + batch_size))
+
                     if return_sample_results:
                         ids.extend(batch_data['id'])
                         for item in features.keys():
@@ -134,6 +154,21 @@ class LMF():
         pred, true = torch.cat(y_pred), torch.cat(y_true)
         eval_results = self.metrics(pred, true)
         eval_results["Loss"] = round(eval_loss, 4)
+
+        # COPA paradigm metrics (for copa_1231/custom/train_12_16)
+        if self.args.dataset_name.lower() in ['custom', 'train_12_16', 'copa_1231']:
+            try:
+                copa_metrics = MetricsTop(self.args.train_mode)
+                group_type = getattr(self.args, 'copa_group_type', 'i1')
+                copa_results = copa_metrics.eval_copa_paradigm_accuracy(
+                    pred, true,
+                    sample_indices=np.array(sample_indices) if sample_indices else None,
+                    group_type=group_type
+                )
+                eval_results.update(copa_results)
+            except Exception as e:
+                logger.warning(f"COPA评估失败: {e}")
+
         logger.info(f"{mode}-({self.args.model_name}) >> {dict_to_str(eval_results)}")
 
         if return_sample_results:

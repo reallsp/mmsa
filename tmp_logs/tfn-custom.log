@@ -1,0 +1,43 @@
+2026-01-04 20:18:11,647 - MMSA [INFO] - ======================================== Program Start ========================================
+2026-01-04 20:18:11,812 - MMSA [INFO] - Found gpu 0, used memory 398721024.
+2026-01-04 20:18:11,821 - MMSA [INFO] - Running with args:
+2026-01-04 20:18:11,821 - MMSA [INFO] - {'model_name': 'tfn', 'dataset_name': 'custom', 'featurePath': '/root/autodl-tmp/data/copa_1231_small.pkl', 'seq_lens': [50, 512, 197], 'feature_dims': [768, 13, 768], 'train_samples': 100, 'num_classes': 2, 'language': 'cn', 'KeyEval': 'Loss', 'missing_rate': [0.0, 0.0, 0.0], 'missing_seed': [1111, 1111, 1111], 'need_data_aligned': True, 'need_model_aligned': True, 'need_normalized': True, 'early_stop': 1, 'hidden_dims': [64, 16, 64], 'text_out': 32, 'post_fusion_dim': 32, 'dropouts': [0.3, 0.3, 0.3, 0.3], 'batch_size': 4, 'learning_rate': 0.001, 'model_save_path': PosixPath('tmp_saved/tfn-custom.pth'), 'device': device(type='cuda', index=0), 'train_mode': 'regression', 'custom_feature': '/root/autodl-tmp/data/copa_1231_small.pkl', 'feature_T': None, 'feature_A': None, 'feature_V': None, 'max_epochs': 1}
+2026-01-04 20:18:11,821 - MMSA [INFO] - Seeds: [1111]
+2026-01-04 20:18:11,822 - MMSA [INFO] - ------------------------------ Running with seed 1111 [1/1] ------------------------------
+2026-01-04 20:18:11,822 - MMSA [INFO] - Loading train data from /root/autodl-tmp/data/copa_1231_small.pkl
+2026-01-04 20:18:12,067 - MMSA [INFO] - train samples: (100,)
+2026-01-04 20:18:12,119 - MMSA [INFO] - Loading valid data from /root/autodl-tmp/data/copa_1231_small.pkl
+2026-01-04 20:18:12,314 - MMSA [INFO] - valid samples: (50,)
+2026-01-04 20:18:12,333 - MMSA [INFO] - Loading test data from /root/autodl-tmp/data/copa_1231_small.pkl
+2026-01-04 20:18:12,482 - MMSA [INFO] - test samples: (50,)
+2026-01-04 20:18:12,736 - MMSA [INFO] - The model has 1476123 trainable parameters
+2026-01-04 20:19:25,622 - MMSA [INFO] - ======================================== Program Start ========================================
+2026-01-04 20:19:25,767 - MMSA [INFO] - Found gpu 0, used memory 398721024.
+2026-01-04 20:19:25,776 - MMSA [INFO] - Running with args:
+2026-01-04 20:19:25,776 - MMSA [INFO] - {'model_name': 'tfn', 'dataset_name': 'custom', 'featurePath': '/root/autodl-tmp/data/copa_1231_small.pkl', 'seq_lens': [50, 512, 197], 'feature_dims': [768, 13, 768], 'train_samples': 100, 'num_classes': 2, 'language': 'cn', 'KeyEval': 'Loss', 'missing_rate': [0.0, 0.0, 0.0], 'missing_seed': [1111, 1111, 1111], 'need_data_aligned': True, 'need_model_aligned': True, 'need_normalized': True, 'early_stop': 1, 'hidden_dims': [64, 16, 64], 'text_out': 32, 'post_fusion_dim': 32, 'dropouts': [0.3, 0.3, 0.3, 0.3], 'batch_size': 4, 'learning_rate': 0.001, 'model_save_path': PosixPath('tmp_saved/tfn-custom.pth'), 'device': device(type='cuda', index=0), 'train_mode': 'regression', 'custom_feature': '/root/autodl-tmp/data/copa_1231_small.pkl', 'feature_T': None, 'feature_A': None, 'feature_V': None, 'max_epochs': 1}
+2026-01-04 20:19:25,776 - MMSA [INFO] - Seeds: [1111]
+2026-01-04 20:19:25,776 - MMSA [INFO] - ------------------------------ Running with seed 1111 [1/1] ------------------------------
+2026-01-04 20:19:25,776 - MMSA [INFO] - Loading train data from /root/autodl-tmp/data/copa_1231_small.pkl
+2026-01-04 20:19:26,017 - MMSA [INFO] - train samples: (100,)
+2026-01-04 20:19:26,064 - MMSA [INFO] - Loading valid data from /root/autodl-tmp/data/copa_1231_small.pkl
+2026-01-04 20:19:26,259 - MMSA [INFO] - valid samples: (50,)
+2026-01-04 20:19:26,279 - MMSA [INFO] - Loading test data from /root/autodl-tmp/data/copa_1231_small.pkl
+2026-01-04 20:19:26,425 - MMSA [INFO] - test samples: (50,)
+2026-01-04 20:19:26,673 - MMSA [INFO] - The model has 1476123 trainable parameters
+2026-01-04 20:21:11,187 - MMSA [INFO] - ======================================== Program Start ========================================
+2026-01-04 20:21:11,352 - MMSA [INFO] - Found gpu 0, used memory 398721024.
+2026-01-04 20:21:11,361 - MMSA [INFO] - Running with args:
+2026-01-04 20:21:11,361 - MMSA [INFO] - {'model_name': 'tfn', 'dataset_name': 'custom', 'featurePath': '/root/autodl-tmp/data/copa_1231_small.pkl', 'seq_lens': [50, 512, 197], 'feature_dims': [768, 13, 768], 'train_samples': 100, 'num_classes': 2, 'language': 'cn', 'KeyEval': 'Loss', 'missing_rate': [0.0, 0.0, 0.0], 'missing_seed': [1111, 1111, 1111], 'need_data_aligned': True, 'need_model_aligned': False, 'need_normalized': True, 'early_stop': 1, 'hidden_dims': [64, 16, 64], 'text_out': 32, 'post_fusion_dim': 32, 'dropouts': [0.3, 0.3, 0.3, 0.3], 'batch_size': 4, 'learning_rate': 0.001, 'model_save_path': PosixPath('tmp_saved/tfn-custom.pth'), 'device': device(type='cuda', index=0), 'train_mode': 'regression', 'custom_feature': '/root/autodl-tmp/data/copa_1231_small.pkl', 'feature_T': None, 'feature_A': None, 'feature_V': None, 'max_epochs': 1}
+2026-01-04 20:21:11,361 - MMSA [INFO] - Seeds: [1111]
+2026-01-04 20:21:11,362 - MMSA [INFO] - ------------------------------ Running with seed 1111 [1/1] ------------------------------
+2026-01-04 20:21:11,362 - MMSA [INFO] - Loading train data from /root/autodl-tmp/data/copa_1231_small.pkl
+2026-01-04 20:21:11,628 - MMSA [INFO] - train samples: (100,)
+2026-01-04 20:21:11,672 - MMSA [INFO] - Loading valid data from /root/autodl-tmp/data/copa_1231_small.pkl
+2026-01-04 20:21:11,869 - MMSA [INFO] - valid samples: (50,)
+2026-01-04 20:21:11,889 - MMSA [INFO] - Loading test data from /root/autodl-tmp/data/copa_1231_small.pkl
+2026-01-04 20:21:12,040 - MMSA [INFO] - test samples: (50,)
+2026-01-04 20:21:12,310 - MMSA [INFO] - The model has 1476123 trainable parameters
+2026-01-04 20:21:13,364 - MMSA [INFO] - TRAIN-(tfn) [1/1/1] >> loss: 1.9764  Has0_acc_2: 0.6600  Has0_F1_score: 0.6444  Non0_acc_2: 0.6600  Non0_F1_score: 0.6444  Mult_acc_5: 0.0700  Mult_acc_7: 0.0700  MAE: 1.9764  Corr: 0.0715  Label0_Precision: 0.7500  Label0_Recall: 0.8108  Label0_F1: 0.7792  Label1_Precision: 0.3000  Label1_Recall: 0.2308  Label1_F1: 0.2609 
+2026-01-04 20:21:13,493 - MMSA [INFO] - TEST-(tfn) >>  Has0_acc_2: 0.7200  Has0_F1_score: 0.6363  Non0_acc_2: 0.7200  Non0_F1_score: 0.6363  Mult_acc_5: 0.0600  Mult_acc_7: 0.0600  MAE: 2.0523  Corr: -0.0830  Label0_Precision: 0.7500  Label0_Recall: 0.9474  Label0_F1: 0.8372  Label1_Precision: 0.0000  Label1_Recall: 0.0000  Label1_F1: 0.0000  Loss: 2.0801  COPA_overall_acc: 0.6667  COPA_P1_acc: 1.0000  COPA_P2_acc: 1.0000  COPA_P3_acc: 1.0000  COPA_P4_acc: 1.0000  COPA_P5_acc: 0.0000  COPA_P6_acc: 0.0000  COPA_P7_acc: 1.0000  COPA_P8_acc: 1.0000  COPA_P9_acc: 0.0000  COPA_P10_acc: 1.0000  COPA_P11_acc: 1.0000  COPA_P12_acc: 0.0000 
+2026-01-04 20:21:14,620 - MMSA [INFO] - Result for seed 1111: {'Has0_acc_2': 0.72, 'Has0_F1_score': 0.6363, 'Non0_acc_2': 0.72, 'Non0_F1_score': 0.6363, 'Mult_acc_5': 0.06, 'Mult_acc_7': 0.06, 'MAE': 2.0523, 'Corr': -0.083, 'Label0_Precision': 0.75, 'Label0_Recall': 0.9474, 'Label0_F1': 0.8372, 'Label1_Precision': 0.0, 'Label1_Recall': 0.0, 'Label1_F1': 0.0, 'Loss': 2.0801, 'COPA_overall_acc': 0.6667, 'COPA_P1_acc': 1.0, 'COPA_P2_acc': 1.0, 'COPA_P3_acc': 1.0, 'COPA_P4_acc': 1.0, 'COPA_P5_acc': 0.0, 'COPA_P6_acc': 0.0, 'COPA_P7_acc': 1.0, 'COPA_P8_acc': 1.0, 'COPA_P9_acc': 0.0, 'COPA_P10_acc': 1.0, 'COPA_P11_acc': 1.0, 'COPA_P12_acc': 0.0}
+2026-01-04 20:21:14,626 - MMSA [INFO] - Results saved to tmp_res/normal/custom.csv.

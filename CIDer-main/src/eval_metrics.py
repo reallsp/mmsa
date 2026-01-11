@@ -81,22 +81,32 @@ def eval_mosei_classification_binary(y_pred, y_true):
     Mult_acc_3 = accuracy_score(y_true, y_pred_3)
     F1_score_3 = f1_score(y_true, y_pred_3, average='weighted')
     # two classes
-    y_pred_2 = np.array([[v[0], v[2]] for v in y_pred])
+    if y_pred.shape[1] == 2:
+        y_pred_2 = y_pred
+    else:
+        y_pred_2 = np.array([[v[0], v[2]] for v in y_pred])
     # with 0 (< 0 or >= 0)
     y_pred_2 = np.argmax(y_pred_2, axis=1)
     y_true_2 = []
     for v in y_true:
-        y_true_2.append(0 if v < 1 else 1)
+        if y_pred.shape[1] == 2:
+            y_true_2.append(v)
+        else:
+            y_true_2.append(0 if v < 1 else 1)
     y_true_2 = np.array(y_true_2)
     Has0_acc_2 = accuracy_score(y_true_2, y_pred_2)
     Has0_F1_score = f1_score(y_true_2, y_pred_2, average='weighted')
     # without 0 (< 0 or > 0)
-    non_zeros = np.array([i for i, e in enumerate(y_true) if e != 1])
-    y_pred_2 = y_pred[non_zeros]
-    y_pred_2 = np.argmax(y_pred_2, axis=1)
-    y_true_2 = y_true[non_zeros]
-    Non0_acc_2 = accuracy_score(y_true_2, y_pred_2)
-    Non0_F1_score = f1_score(y_true_2, y_pred_2, average='weighted')
+    if y_pred.shape[1] == 2:
+        Non0_acc_2 = Has0_acc_2
+        Non0_F1_score = Has0_F1_score
+    else:
+        non_zeros = np.array([i for i, e in enumerate(y_true) if e != 1])
+        y_pred_2 = y_pred[non_zeros]
+        y_pred_2 = np.argmax(y_pred_2, axis=1)
+        y_true_2 = y_true[non_zeros]
+        Non0_acc_2 = accuracy_score(y_true_2, y_pred_2)
+        Non0_F1_score = f1_score(y_true_2, y_pred_2, average='weighted')
 
     print(f'Has0_acc_2: {Has0_acc_2:.3f}')
     print(f'Has0_F1_score: {Has0_F1_score:.3f}')
@@ -180,30 +190,42 @@ def eval_mosei_classification_binary_cf(y_pred, y_cf_pred, y_true):
     Has0_F1_score = 0
     for tau in np.arange(0, 3.1, 0.1):
         tmp_y_pred = y_pred - tau * y_cf_pred
-        tmp_y_pred_2 = np.array([[v[0], v[2]] for v in tmp_y_pred])
+        # 适配真正的二分类（维度为2）和原有的三分类（维度为3）
+        if tmp_y_pred.shape[1] == 2:
+            tmp_y_pred_2 = tmp_y_pred
+        else:
+            tmp_y_pred_2 = np.array([[v[0], v[2]] for v in tmp_y_pred])
         # with 0 (< 0 or >= 0)
         tmp_y_pred_2 = np.argmax(tmp_y_pred_2, axis=1)
         y_true_2 = []
         for v in y_true:
-            y_true_2.append(0 if v < 1 else 1)
+            if tmp_y_pred.shape[1] == 2:
+                y_true_2.append(v) # 真正二分类直接使用原标签
+            else:
+                y_true_2.append(0 if v < 1 else 1) # 原有逻辑映射
         y_true_2 = np.array(y_true_2)
         tmp_Has0_acc_2 = accuracy_score(y_true_2, tmp_y_pred_2)
         tmp_Has0_F1_score = f1_score(y_true_2, tmp_y_pred_2, average='weighted')
         Has0_acc_2 = max(Has0_acc_2, tmp_Has0_acc_2)
         Has0_F1_score = max(Has0_F1_score, tmp_Has0_F1_score)
     # without 0 (< 0 or > 0)
-    non_zeros = np.array([i for i, e in enumerate(y_true) if e != 1])
-    Non0_acc_2 = 0
-    Non0_F1_score = 0
-    for tau in np.arange(0, 3.1, 0.1):
-        tmp_y_pred = y_pred - tau * y_cf_pred
-        tmp_y_pred_2 = tmp_y_pred[non_zeros]
-        tmp_y_pred_2 = np.argmax(tmp_y_pred_2, axis=1)
-        y_true_2 = y_true[non_zeros]
-        tmp_Non0_acc_2 = accuracy_score(y_true_2, tmp_y_pred_2)
-        tmp_Non0_F1_score = f1_score(y_true_2, tmp_y_pred_2, average='weighted')
-        Non0_acc_2 = max(Non0_acc_2, tmp_Non0_acc_2)
-        Non0_F1_score = max(Non0_F1_score, tmp_Non0_F1_score)
+    # 对于真正二分类，Non0_acc_2 就等于 Has0_acc_2
+    if y_pred.shape[1] == 2:
+        Non0_acc_2 = Has0_acc_2
+        Non0_F1_score = Has0_F1_score
+    else:
+        non_zeros = np.array([i for i, e in enumerate(y_true) if e != 1])
+        Non0_acc_2 = 0
+        Non0_F1_score = 0
+        for tau in np.arange(0, 3.1, 0.1):
+            tmp_y_pred = y_pred - tau * y_cf_pred
+            tmp_y_pred_2 = tmp_y_pred[non_zeros]
+            tmp_y_pred_2 = np.argmax(tmp_y_pred_2, axis=1)
+            y_true_2 = y_true[non_zeros]
+            tmp_Non0_acc_2 = accuracy_score(y_true_2, tmp_y_pred_2)
+            tmp_Non0_F1_score = f1_score(y_true_2, tmp_y_pred_2, average='weighted')
+            Non0_acc_2 = max(Non0_acc_2, tmp_Non0_acc_2)
+            Non0_F1_score = max(Non0_F1_score, tmp_Non0_F1_score)
 
 
     print(f'Non0_acc_2: {Non0_acc_2:.3f}')

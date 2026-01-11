@@ -45,9 +45,27 @@ class TFN(nn.Module):
         self.video_subnet = SubNet(self.video_in, self.video_hidden, self.video_prob)
         self.text_subnet = TextSubNet(self.text_in, self.text_hidden, self.text_out, dropout=self.text_prob)
 
+        # ========== 额外模态编码 ==========
+        # 支持 ir_feature / bio / eye / eeg / eda / audio_waveform
+        extra_hidden = 32
+        self.extra_mlps = nn.ModuleDict({
+            'ir_feature': nn.Linear(self.video_in, extra_hidden),
+            'bio': nn.Linear(3, extra_hidden),
+            'eye': nn.Linear(2, extra_hidden),
+            'eeg': nn.Linear(8, extra_hidden),
+            'eda': nn.Linear(7, extra_hidden),
+            # audio_waveform 使用 mean+std 两维输入
+            'audio_waveform': nn.Linear(2, extra_hidden),
+        })
+        self.extra_fusion = nn.Linear(len(self.extra_mlps) * extra_hidden, extra_hidden)
+        self.use_extra = True
+
         # define the post_fusion layers
         self.post_fusion_dropout = nn.Dropout(p=self.post_fusion_prob)
-        self.post_fusion_layer_1 = nn.Linear((self.text_out + 1) * (self.video_hidden + 1) * (self.audio_hidden + 1), self.post_fusion_dim)
+        fusion_in_dim = (self.text_out + 1) * (self.video_hidden + 1) * (self.audio_hidden + 1)
+        if self.use_extra:
+            fusion_in_dim += extra_hidden
+        self.post_fusion_layer_1 = nn.Linear(fusion_in_dim, self.post_fusion_dim)
         self.post_fusion_layer_2 = nn.Linear(self.post_fusion_dim, self.post_fusion_dim)
         self.post_fusion_layer_3 = nn.Linear(self.post_fusion_dim, self.output_dim)
 
@@ -56,7 +74,30 @@ class TFN(nn.Module):
         self.output_range = Parameter(torch.FloatTensor([6]), requires_grad=False)
         self.output_shift = Parameter(torch.FloatTensor([-3]), requires_grad=False)
 
-    def forward(self, text_x, audio_x, video_x):
+    def _encode_extra(self, extras, device):
+        if (extras is None) or (len(extras) == 0):
+            return None
+        encoded = []
+        batch_size = next(iter(extras.values())).shape[0] if extras else 0
+        for k, mlp in self.extra_mlps.items():
+            if k not in extras:
+                encoded.append(torch.zeros((batch_size, mlp.out_features), device=device))
+                continue
+            x = extras[k]
+            if k == 'audio_waveform':
+                mean = x.mean(dim=1, keepdim=True)
+                std = x.std(dim=1, keepdim=True)
+                x = torch.cat([mean, std], dim=1)
+            else:
+                if x.dim() > 2:
+                    x = x.mean(dim=1)
+            encoded.append(torch.relu(mlp(x)))
+        if not encoded:
+            return None
+        concat = torch.cat(encoded, dim=1)
+        return torch.relu(self.extra_fusion(concat))
+
+    def forward(self, text_x, audio_x, video_x, extras=None):
         '''
         Args:
             audio_x: tensor of shape (batch_size, audio_in)
@@ -88,6 +129,12 @@ class TFN(nn.Module):
         # in the end we don't keep the 3-D tensor, instead we flatten it
         fusion_tensor = fusion_tensor.view(-1, (self.audio_hidden + 1) * (self.video_hidden + 1), 1)
         fusion_tensor = torch.bmm(fusion_tensor, _text_h.unsqueeze(1)).view(batch_size, -1)
+
+        # 追加额外模态
+        if self.use_extra:
+            extra_vec = self._encode_extra(extras, device=text_x.device)
+            if extra_vec is not None:
+                fusion_tensor = torch.cat([fusion_tensor, extra_vec], dim=1)
 
         post_fusion_dropped = self.post_fusion_dropout(fusion_tensor)
         post_fusion_y_1 = F.relu(self.post_fusion_layer_1(post_fusion_dropped), inplace=True)

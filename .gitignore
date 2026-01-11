@@ -15,3 +15,7 @@ datasets/
 train_12.16_1_converted.pkl
 train_12.16_1.pkl
 saved_models/
+quick_cv_small.py
+CIDer-main/mosei_feats/iid/binary/*
+CIDer-main/mosei_feats/iid/binary/*.npy
+CIDer-main/mosei_feats/iid/binary/mosei_train_binary_unaligned_2.npy

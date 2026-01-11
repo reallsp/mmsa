@@ -31,6 +31,7 @@ class AMIO(nn.Module):
             # 'almt_mil': ALMT_MIL,  # 模块不存在，暂时注释
             # 'almt_r1': ALMT_R1,  # 模块不存在，暂时注释
             'almt_cider': ALMT_CIDer,
+            'cider_lite': CIDerLite,
             # multi-task
             'mtfn': MTFN,
             'mlmf': MLMF,

@@ -18,7 +18,7 @@ from MMSA.run import MMSA_run
 SUPPORTED_MODELS = [
     'tfn', 'lmf', 'mfn', 'graph_mfn', 'ef_lstm', 'lf_dnn',
     'mult', 'misa', 'bert_mag', 'mfm', 'mmim', 'mctn',
-    'cenet', 'almt', 'almt_cider'
+    'cenet', 'almt', 'almt_cider', 'cider_lite'
 ]
 
 # 支持的数据集列表
