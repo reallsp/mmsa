@@ -2,6 +2,8 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
+import os
+
 from modules.transformer import TransformerEncoder
 # from modules.vanilla_transformer import TransformerEncoder
 from modules.compressed_multihead_attention import CompressedMultiheadAttention
@@ -70,7 +72,12 @@ class CIDERModel(nn.Module):
         # self.v_len = self.orig_v_len
 
         # Prepare BERT model
-        self.text_model = BertTextEncoder(language=hyp_params.language)
+        # NOTE: allow overriding pretrained name/path & cache dir via hyp_params
+        self.text_model = BertTextEncoder(
+            language=hyp_params.language,
+            model_name_or_path=getattr(hyp_params, "bert_name_or_path", None),
+            cache_dir=getattr(hyp_params, "bert_cache_dir", None),
+        )
 
         # 1. Temporal convolutional blocks
         self.proj_l = nn.Conv1d(self.orig_d_l, self.embed_dim, kernel_size=1, bias=False)
@@ -298,7 +305,7 @@ class CIDERModel(nn.Module):
 
 
 class BertTextEncoder(nn.Module):
-    def __init__(self, language='en'):
+    def __init__(self, language='en', model_name_or_path: str | None = None, cache_dir: str | None = None):
         """
         language: en / cn
         """
@@ -308,12 +315,39 @@ class BertTextEncoder(nn.Module):
 
         tokenizer_class = BertTokenizer
         model_class = BertModel
+        # default to public HF model ids to avoid hardcoded local paths
+        if model_name_or_path is None:
+            model_name_or_path = "bert-base-uncased" if language == "en" else "bert-base-chinese"
+
+        # If running in an offline / restricted network environment, force local loading from cache.
+        # Users can enable this by setting HF_HUB_OFFLINE=1 or TRANSFORMERS_OFFLINE=1.
+        offline = str(os.environ.get("HF_HUB_OFFLINE", "")).lower() in ("1", "true", "yes") or \
+                  str(os.environ.get("TRANSFORMERS_OFFLINE", "")).lower() in ("1", "true", "yes")
+        local_files_only = offline or os.path.exists(model_name_or_path)
+
         if language == 'en':
-            self.tokenizer = tokenizer_class.from_pretrained('/data/zhonggw/pretrained_models/bert_en', do_lower_case=True)
-            self.model = model_class.from_pretrained('/data/zhonggw/pretrained_models/bert_en')
+            self.tokenizer = tokenizer_class.from_pretrained(
+                model_name_or_path,
+                do_lower_case=True,
+                cache_dir=cache_dir,
+                local_files_only=local_files_only,
+            )
+            self.model = model_class.from_pretrained(
+                model_name_or_path,
+                cache_dir=cache_dir,
+                local_files_only=local_files_only,
+            )
         elif language == 'cn':
-            self.tokenizer = tokenizer_class.from_pretrained('/data/zhonggw/pretrained_models/bert_cn')
-            self.model = model_class.from_pretrained('/data/zhonggw/pretrained_models/bert_cn')
+            self.tokenizer = tokenizer_class.from_pretrained(
+                model_name_or_path,
+                cache_dir=cache_dir,
+                local_files_only=local_files_only,
+            )
+            self.model = model_class.from_pretrained(
+                model_name_or_path,
+                cache_dir=cache_dir,
+                local_files_only=local_files_only,
+            )
 
     def get_tokenizer(self):
         return self.tokenizer

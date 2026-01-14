@@ -22,6 +22,7 @@ class MMDataset(Dataset):
             'custom': self.__init_custom,
             'train_12_16': self.__init_custom,
             'copa_1231': self.__init_custom,
+            'scl90_1231': self.__init_custom,
         }
         DATASET_MAP[args['dataset_name']]()
 
@@ -192,6 +193,55 @@ class MMDataset(Dataset):
                 self.extra_features[k] = data_mode[k].astype(np.float32)
                 if not self.args['need_data_aligned']:
                     self.extra_features[f'{k}_lengths'] = data_mode.get(f'{k}_lengths', [self.extra_features[k].shape[1]] * len(self.audio))
+
+        # Optional: fuse extra modalities into base modalities so existing models can truly use them.
+        # Strategy:
+        # - If ir_feature exists and has same (N, T, D) as vision, concatenate to vision feature dim.
+        # - For bio/eye/eeg/eda, compute masked mean pooling per sample, then broadcast across audio time steps
+        #   and concatenate to audio feature dim.
+        if self.args.get('fuse_extra_features'):
+            try:
+                # fuse ir_feature -> vision
+                if 'ir_feature' in self.extra_features:
+                    ir = self.extra_features['ir_feature']
+                    if isinstance(ir, np.ndarray) and ir.ndim == 3 and ir.shape[0] == self.vision.shape[0] and ir.shape[1] == self.vision.shape[1]:
+                        self.vision = np.concatenate([self.vision, ir], axis=2)
+                        self.args['feature_dims'][2] = self.vision.shape[2]
+                        # avoid double-using it (and avoid dim mismatch in models that expect ir_feature dim == video_in)
+                        self.extra_features.pop('ir_feature', None)
+                        self.extra_features.pop('ir_feature_lengths', None)
+
+                # helper: masked mean pool (N, L, D) with lens list -> (N, D)
+                def _masked_mean(arr: np.ndarray, lens_list):
+                    n, l, d = arr.shape
+                    lens = np.array(list(lens_list), dtype=np.int32)
+                    lens = np.clip(lens, 1, l)
+                    mask = (np.arange(l, dtype=np.int32)[None, :] < lens[:, None]).astype(np.float32)[:, :, None]
+                    denom = np.clip(mask.sum(axis=1), 1.0, None)
+                    return (arr * mask).sum(axis=1) / denom
+
+                pooled_list = []
+                for k in ['bio', 'eye', 'eeg', 'eda']:
+                    if k in self.extra_features:
+                        arr = self.extra_features[k]
+                        if not (isinstance(arr, np.ndarray) and arr.ndim == 3):
+                            continue
+                        lens_key = f'{k}_lengths'
+                        lens_list = self.extra_features.get(lens_key, [arr.shape[1]] * arr.shape[0])
+                        pooled_list.append(_masked_mean(arr, lens_list))
+
+                if pooled_list:
+                    pooled = np.concatenate(pooled_list, axis=1)  # (N, sumD)
+                    # broadcast to audio time length
+                    rep = np.repeat(pooled[:, None, :], self.audio.shape[1], axis=1)
+                    self.audio = np.concatenate([self.audio, rep.astype(np.float32)], axis=2)
+                    self.args['feature_dims'][1] = self.audio.shape[2]
+                    # avoid double-using these extra modalities
+                    for k in ['bio', 'eye', 'eeg', 'eda']:
+                        self.extra_features.pop(k, None)
+                        self.extra_features.pop(f'{k}_lengths', None)
+            except Exception as e:
+                logger.warning(f"fuse_extra_features failed, fallback to base modalities only. err={e}")
         
         # 加载其他字段
         self.raw_text = data_mode.get('raw_text', [''] * len(self.audio))

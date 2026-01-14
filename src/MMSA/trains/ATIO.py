@@ -35,6 +35,7 @@ class ATIO():
             'mlf_dnn': MLF_DNN,
             'self_mm': SELF_MM,
             'tetfn': TETFN,
+            'gmm': GMM,
             # missing-task
             'tfr_net': TFR_NET,
         }

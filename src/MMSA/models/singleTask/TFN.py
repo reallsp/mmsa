@@ -133,8 +133,11 @@ class TFN(nn.Module):
         # 追加额外模态
         if self.use_extra:
             extra_vec = self._encode_extra(extras, device=text_x.device)
-            if extra_vec is not None:
-                fusion_tensor = torch.cat([fusion_tensor, extra_vec], dim=1)
+            # IMPORTANT: keep fusion dim consistent with __init__ (fusion_in_dim += extra_hidden)
+            # If extras is empty/None, append a zero vector so the linear layer input dim matches.
+            if extra_vec is None:
+                extra_vec = torch.zeros((batch_size, self.extra_fusion.out_features), device=text_x.device, dtype=fusion_tensor.dtype)
+            fusion_tensor = torch.cat([fusion_tensor, extra_vec], dim=1)
 
         post_fusion_dropped = self.post_fusion_dropout(fusion_tensor)
         post_fusion_y_1 = F.relu(self.post_fusion_layer_1(post_fusion_dropped), inplace=True)

@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import os
 from transformers import BertModel, BertTokenizer, RobertaModel, RobertaTokenizer
 
 __all__ = ['BertTextEncoder']
@@ -10,13 +11,33 @@ TRANSFORMERS_MAP = {
 }
 
 class BertTextEncoder(nn.Module):
-    def __init__(self, use_finetune=False, transformers='bert', pretrained='bert-base-uncased'):
+    def __init__(
+        self,
+        use_finetune: bool = False,
+        transformers: str = 'bert',
+        pretrained: str = 'bert-base-uncased',
+        cache_dir: str | None = None,
+        local_files_only: bool | None = None,
+    ):
         super().__init__()
 
         tokenizer_class = TRANSFORMERS_MAP[transformers][1]
         model_class = TRANSFORMERS_MAP[transformers][0]
-        self.tokenizer = tokenizer_class.from_pretrained(pretrained)
-        self.model = model_class.from_pretrained(pretrained)
+
+        # 如果给的是本地目录/文件，则默认强制离线加载，避免在无外网环境下 from_pretrained 超时。
+        if local_files_only is None:
+            local_files_only = os.path.exists(pretrained)
+
+        self.tokenizer = tokenizer_class.from_pretrained(
+            pretrained,
+            cache_dir=cache_dir,
+            local_files_only=local_files_only,
+        )
+        self.model = model_class.from_pretrained(
+            pretrained,
+            cache_dir=cache_dir,
+            local_files_only=local_files_only,
+        )
         self.use_finetune = use_finetune
     
     def get_tokenizer(self):

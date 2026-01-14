@@ -239,8 +239,8 @@ class CIDerLite():
         eval_results = self.metrics(pred_clipped, true)
         eval_results["Loss"] = round(eval_loss, 4)
 
-        # COPA 范式指标
-        if self.args.dataset_name.lower() in ['custom', 'train_12_16', 'copa_1231']:
+        # COPA 范式指标（SCL90 也复用同一套列）
+        if self.args.dataset_name.lower() in ['custom', 'train_12_16', 'copa_1231', 'scl90_1231']:
             try:
                 copa_metrics = MetricsTop(self.args.train_mode)
                 group_type = getattr(self.args, 'copa_group_type', 'i1')

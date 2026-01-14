@@ -23,6 +23,12 @@ ONLY_FOLD=""
 MAX_EPOCHS=""
 BATCH=""
 WORKERS=""
+PREFETCH_FACTOR=""
+PIN_MEMORY_MODE=""            # "pin" | "nopin" | ""
+PERSISTENT_WORKERS_MODE=""     # "persistent" | "nopersistent" | ""
+FEATURE_PATH=""
+USE_ALL_FEATURES="0"
+PRETRAINED=""
 NOHUP_LOG_DIR="${ROOT_DIR}/logs/experiments"
 PY_LOG_DIR="${ROOT_DIR}/logs/experiments_py"
 RESULTS_CSV="${ROOT_DIR}/results/all_final_test_results.csv"
@@ -42,6 +48,14 @@ while [[ $# -gt 0 ]]; do
     --max-epochs) MAX_EPOCHS="$2"; shift 2 ;;
     --batch) BATCH="$2"; shift 2 ;;
     --workers) WORKERS="$2"; shift 2 ;;
+    --prefetch-factor) PREFETCH_FACTOR="$2"; shift 2 ;;
+    --pin-memory) PIN_MEMORY_MODE="pin"; shift 1 ;;
+    --no-pin-memory) PIN_MEMORY_MODE="nopin"; shift 1 ;;
+    --persistent-workers) PERSISTENT_WORKERS_MODE="persistent"; shift 1 ;;
+    --no-persistent-workers) PERSISTENT_WORKERS_MODE="nopersistent"; shift 1 ;;
+    --feature-path) FEATURE_PATH="$2"; shift 2 ;;
+    --use-all-features) USE_ALL_FEATURES="1"; shift 1 ;;
+    --pretrained) PRETRAINED="$2"; shift 2 ;;
     --nohup-log-dir) NOHUP_LOG_DIR="$2"; shift 2 ;;
     --py-log-dir) PY_LOG_DIR="$2"; shift 2 ;;
     --results-csv) RESULTS_CSV="$2"; shift 2 ;;
@@ -81,6 +95,14 @@ if [[ -n "${ONLY_FOLD}" ]]; then CMD+=(--only-fold "${ONLY_FOLD}"); fi
 if [[ -n "${MAX_EPOCHS}" ]]; then CMD+=(--max-epochs "${MAX_EPOCHS}"); fi
 if [[ -n "${BATCH}" ]]; then CMD+=(--batch-size "${BATCH}"); fi
 if [[ -n "${WORKERS}" ]]; then CMD+=(--num-workers "${WORKERS}"); fi
+if [[ -n "${PREFETCH_FACTOR}" ]]; then CMD+=(--prefetch-factor "${PREFETCH_FACTOR}"); fi
+if [[ "${PIN_MEMORY_MODE}" == "pin" ]]; then CMD+=(--pin-memory); fi
+if [[ "${PIN_MEMORY_MODE}" == "nopin" ]]; then CMD+=(--no-pin-memory); fi
+if [[ "${PERSISTENT_WORKERS_MODE}" == "persistent" ]]; then CMD+=(--persistent-workers); fi
+if [[ "${PERSISTENT_WORKERS_MODE}" == "nopersistent" ]]; then CMD+=(--no-persistent-workers); fi
+if [[ -n "${FEATURE_PATH}" ]]; then CMD+=(--feature-path "${FEATURE_PATH}"); fi
+if [[ "${USE_ALL_FEATURES}" == "1" ]]; then CMD+=(--use-all-features); fi
+if [[ -n "${PRETRAINED}" ]]; then CMD+=(--pretrained "${PRETRAINED}"); fi
 if [[ "${CPU}" == "1" ]]; then CMD+=(--cpu); fi
 # python-side logging + results
 if [[ -z "${EXP_NAME}" ]]; then

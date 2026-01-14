@@ -57,7 +57,7 @@ def train_model(settings, hyp_params, test_loader, device):
                 text_cf = batch_data['text_cf'].to(device)
                 binary_labels = binary_labels.view(-1).long()
                 seven_labels = seven_labels.view(-1).long()
-                cls_ids = 3 if task == 'binary' else 7
+                cls_ids = int(cls_probs.size(1)) if cls_probs.dim() == 2 else int(getattr(hyp_params, "output_dim", 3))
                 cls_feats = []
 
                 for idx in range(cls_ids):

@@ -14,6 +14,7 @@ class MetricsTop():
                 'CUSTOM': self.__eval_mosi_regression,  # 使用MOSI的回归指标
                 'TRAIN_12_16': self.__eval_mosi_regression,  # 使用MOSI的回归指标
                 'COPA_1231': self.__eval_mosi_regression,  # 使用MOSI的回归指标
+                'SCL90_1231': self.__eval_mosi_regression,  # 复用回归指标（MAE/Corr/Has0等）
             }
         else:
             self.metrics_dict = {
@@ -24,6 +25,7 @@ class MetricsTop():
                 'CUSTOM': self.__eval_mosi_classification,  # 使用MOSI的分类指标
                 'TRAIN_12_16': self.__eval_mosi_classification,  # 使用MOSI的分类指标
                 'COPA_1231': self.__eval_mosi_classification,  # 使用MOSI的分类指标
+                'SCL90_1231': self.__eval_mosi_classification,
             }
 
     def __eval_mosi_classification(self, y_pred, y_true):
@@ -102,12 +104,22 @@ class MetricsTop():
         mult_a5 = self.__multiclass_acc(test_preds_a5, test_truth_a5)
         mult_a3 = self.__multiclass_acc(test_preds_a3, test_truth_a3)
         
-        non_zeros = np.array([i for i, e in enumerate(test_truth) if e != 0])
-        non_zeros_binary_truth = (test_truth[non_zeros] > 0)
-        non_zeros_binary_preds = (test_preds[non_zeros] > 0)
+        # Ensure non_zeros is integer array and handle empty case
+        non_zeros = np.array([i for i, e in enumerate(test_truth) if e != 0], dtype=np.int64)
+        if len(non_zeros) > 0:
+            non_zeros_binary_truth = (test_truth[non_zeros] > 0)
+            non_zeros_binary_preds = (test_preds[non_zeros] > 0)
+        else:
+            # If no non-zero values, set default values
+            non_zeros_binary_truth = np.array([])
+            non_zeros_binary_preds = np.array([])
 
-        non_zeros_acc2 = accuracy_score(non_zeros_binary_preds, non_zeros_binary_truth)
-        non_zeros_f1_score = f1_score(non_zeros_binary_truth, non_zeros_binary_preds, average='weighted')
+        if len(non_zeros) > 0:
+            non_zeros_acc2 = accuracy_score(non_zeros_binary_preds, non_zeros_binary_truth)
+            non_zeros_f1_score = f1_score(non_zeros_binary_truth, non_zeros_binary_preds, average='weighted')
+        else:
+            non_zeros_acc2 = 0.0
+            non_zeros_f1_score = 0.0
 
         binary_truth = (test_truth >= 0)
         binary_preds = (test_preds >= 0)
@@ -222,21 +234,22 @@ class MetricsTop():
         y_pred = y_pred.flatten()
         y_true = y_true.flatten()
         
-        # 将回归值转换为分类值 (0或1)
-        # 假设回归值范围是[-1, 1]，需要转换为[0, 1]
-        # 如果y_pred已经是0/1，则不需要转换
-        if y_pred.min() < 0 or y_pred.max() > 1:
-            # 将[-1, 1]映射到[0, 1]
-            y_pred_class = ((y_pred + 1) / 2).round().astype(int)
-            y_pred_class = np.clip(y_pred_class, 0, 1)
-        else:
-            y_pred_class = y_pred.round().astype(int)
-        
-        if y_true.min() < 0 or y_true.max() > 1:
-            y_true_class = ((y_true + 1) / 2).round().astype(int)
-            y_true_class = np.clip(y_true_class, 0, 1)
-        else:
-            y_true_class = y_true.round().astype(int)
+        # 将回归值转换为二分类 (0/1)
+        # - COPA 原始假设：回归范围 [-1,1]，映射到 [0,1]
+        # - SCL90 等：标签是 0~K（如 0~4），按 0 vs 非0 做二分类，保证与 Has0_acc_2 的语义一致
+        def to_binary(x: np.ndarray) -> np.ndarray:
+            x = x.astype(np.float32, copy=False)
+            if x.min() >= 0 and x.max() > 1:
+                # e.g. 0~4 -> 0 vs non0
+                return (x > 0).astype(int)
+            if x.min() < 0 or x.max() > 1:
+                # assume [-1,1]
+                xb = ((x + 1) / 2).round().astype(int)
+                return np.clip(xb, 0, 1)
+            return x.round().astype(int)
+
+        y_pred_class = to_binary(y_pred)
+        y_true_class = to_binary(y_true)
         
         # COPA范式定义
         paradigms = {

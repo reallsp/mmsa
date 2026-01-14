@@ -9,8 +9,9 @@ bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/run_experiment.sh" \
   --kfold \
   --gpu 0 \
   --max-epochs 50 \
-  --batch 128 \
+  --batch 32 \
   --workers 8 \
+  --use-all-features \
   --tag ciderlite_copa_1231_kfold_full \
   --exp-name ciderlite_copa_1231_kfold_full \
   --foreground

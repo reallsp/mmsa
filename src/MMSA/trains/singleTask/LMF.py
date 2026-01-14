@@ -155,8 +155,8 @@ class LMF():
         eval_results = self.metrics(pred, true)
         eval_results["Loss"] = round(eval_loss, 4)
 
-        # COPA paradigm metrics (for copa_1231/custom/train_12_16)
-        if self.args.dataset_name.lower() in ['custom', 'train_12_16', 'copa_1231']:
+        # COPA paradigm metrics (for copa_1231/custom/train_12_16; SCL90 also reuses the same columns)
+        if self.args.dataset_name.lower() in ['custom', 'train_12_16', 'copa_1231', 'scl90_1231']:
             try:
                 copa_metrics = MetricsTop(self.args.train_mode)
                 group_type = getattr(self.args, 'copa_group_type', 'i1')

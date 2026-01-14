@@ -100,7 +100,8 @@ def train_model(settings, hyp_params, train_loader, valid_loader, test_loader, d
             cls_probs = batch_data['cls_probs'].to(device)
             binary_labels = binary_labels.view(-1).long()
             seven_labels = seven_labels.view(-1).long()
-            cls_ids = 3 if task == 'binary' else 7
+            # generalize: honor actual cls_probs dim (supports 2-class datasets like copa_1231)
+            cls_ids = int(cls_probs.size(1)) if cls_probs.dim() == 2 else int(getattr(hyp_params, "output_dim", 3))
             cls_feats = []
 
             batch_size = text.size(0)
@@ -188,7 +189,7 @@ def train_model(settings, hyp_params, train_loader, valid_loader, test_loader, d
                 text_cf = batch_data['text_cf'].to(device)
                 binary_labels = binary_labels.view(-1).long()
                 seven_labels = seven_labels.view(-1).long()
-                cls_ids = 3 if task == 'binary' else 7
+                cls_ids = int(cls_probs.size(1)) if cls_probs.dim() == 2 else int(getattr(hyp_params, "output_dim", 3))
                 cls_feats = []
 
                 batch_size = text.size(0)
@@ -202,29 +203,37 @@ def train_model(settings, hyp_params, train_loader, valid_loader, test_loader, d
                                      text_lengths=text_lengths, cls_feats=cls_feats, cls_probs=cls_probs,
                                      device=device, test=False, missing=False))
 
-                outputs_m = net(**dict(text=(text, text_m, text_cf), audio=(audio, audio_m), vision=(vision, vision_m),
-                                       input_masks=(text_mask, audio_mask, vision_mask),
-                                       text_lengths=text_lengths, cls_feats=cls_feats, cls_probs=cls_probs,
-                                       device=device, test=test, missing=True))
+                # We need TWO missing-modal forwards:
+                # - one with `test=False` to get recon/distill heads for loss
+                # - one with `test=True` to get `cf_pred_m` for counterfactual metrics
+                outputs_m_loss = net(**dict(text=(text, text_m, text_cf), audio=(audio, audio_m), vision=(vision, vision_m),
+                                            input_masks=(text_mask, audio_mask, vision_mask),
+                                            text_lengths=text_lengths, cls_feats=cls_feats, cls_probs=cls_probs,
+                                            device=device, test=False, missing=True))
+
+                outputs_m_cf = net(**dict(text=(text, text_m, text_cf), audio=(audio, audio_m), vision=(vision, vision_m),
+                                          input_masks=(text_mask, audio_mask, vision_mask),
+                                          text_lengths=text_lengths, cls_feats=cls_feats, cls_probs=cls_probs,
+                                          device=device, test=True, missing=True))
 
                 if not test:
                     if task == 'binary':
-                        loss_task_m = task_criterion(outputs_m['pred_m'], binary_labels)
+                        loss_task_m = task_criterion(outputs_m_loss['pred_m'], binary_labels)
                     else:  # seven
-                        loss_task_m = task_criterion(outputs_m['pred_m'], seven_labels)
+                        loss_task_m = task_criterion(outputs_m_loss['pred_m'], seven_labels)
 
-                    loss_joint_rep = 1 - F.cosine_similarity(outputs_m['joint_rep_m'], outputs['joint_rep'].detach(),
+                    loss_joint_rep = 1 - F.cosine_similarity(outputs_m_loss['joint_rep_m'], outputs['joint_rep'].detach(),
                                                              dim=-1).mean()
 
-                    loss_attn = F.kl_div(F.log_softmax(outputs_m['attn_m'], dim=-1),
+                    loss_attn = F.kl_div(F.log_softmax(outputs_m_loss['attn_m'], dim=-1),
                                          F.softmax(outputs['attn'].detach(), dim=-1), reduction='batchmean')
 
                     mask = text_mask - text_missing_mask
-                    loss_recon_text = recon_criterion(outputs_m['text_recon'], outputs['text_for_recon'], mask)
+                    loss_recon_text = recon_criterion(outputs_m_loss['text_recon'], outputs['text_for_recon'], mask)
                     mask = audio_mask - audio_missing_mask
-                    loss_recon_audio = recon_criterion(outputs_m['audio_recon'], audio, mask)
+                    loss_recon_audio = recon_criterion(outputs_m_loss['audio_recon'], audio, mask)
                     mask = vision_mask - vision_missing_mask
-                    loss_recon_video = recon_criterion(outputs_m['vision_recon'], vision, mask)
+                    loss_recon_video = recon_criterion(outputs_m_loss['vision_recon'], vision, mask)
                     loss_recon = loss_recon_text + loss_recon_audio + loss_recon_video
 
                     combined_loss = loss_task_m + \
@@ -232,23 +241,19 @@ def train_model(settings, hyp_params, train_loader, valid_loader, test_loader, d
                                     hyp_params.attn_weight * loss_attn + \
                                     hyp_params.recon_weight * loss_recon
                     total_loss += combined_loss.item() * batch_size
-                else:
-                    # Collect the results into dictionary
-                    results.append(outputs_m['pred_m'])
-                    cf_results.append(outputs_m['cf_pred_m'])
-                    if task == 'binary':
-                        truths.append(binary_labels)
-                    else:  # seven
-                        truths.append(seven_labels)
+                # Collect predictions for both valid/test
+                results.append(outputs_m_cf['pred_m'])
+                cf_results.append(outputs_m_cf['cf_pred_m'])
+                if task == 'binary':
+                    truths.append(binary_labels)
+                else:  # seven
+                    truths.append(seven_labels)
 
         avg_loss = total_loss / (hyp_params.n_valid) if not test else None
 
-        if test:
-            results = torch.cat(results)
-            cf_results = torch.cat(cf_results)
-            truths = torch.cat(truths)
-        else:
-            results, cf_results, truths = None, None, None
+        results = torch.cat(results) if len(results) > 0 else None
+        cf_results = torch.cat(cf_results) if len(cf_results) > 0 else None
+        truths = torch.cat(truths) if len(truths) > 0 else None
 
         return avg_loss, results, cf_results, truths
 
@@ -312,7 +317,11 @@ def train_model(settings, hyp_params, train_loader, valid_loader, test_loader, d
         else:  # seven
             ans = eval_mosi_classification_seven_cf(results, cf_results, truths)
 
-    return ans[eval_metric]
+    # return full metrics dict for easier external integration (e.g., MMSA framework)
+    ans = dict(ans)
+    ans["eval_metric"] = eval_metric
+    ans["best_value"] = ans.get(eval_metric, best_value)
+    return ans
 
 
 class ReconLoss(nn.Module):

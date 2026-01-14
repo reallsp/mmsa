@@ -165,8 +165,8 @@ class TFN():
         eval_results = self.metrics(pred, true)
         eval_results["Loss"] = round(eval_loss, 4)
         
-        # 如果是custom数据集，添加COPA评估
-        if self.args.dataset_name.lower() in ['custom', 'train_12_16', 'copa_1231']:
+        # 如果是 custom/COPA-like 数据集，添加 COPA 指标（SCL90 也复用同一套列）
+        if self.args.dataset_name.lower() in ['custom', 'train_12_16', 'copa_1231', 'scl90_1231']:
             try:
                 copa_metrics = MetricsTop(self.args.train_mode)
                 # 获取群体类型（从args中获取，默认为i1）
